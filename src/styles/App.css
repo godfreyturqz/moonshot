@@ -1,0 +1,28 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'); */
+@font-face {
+    font-family: 'Poppins';
+    src: local('Poppins'), url('/src/assets/fonts/Poppins-Regular-400.ttf') format('truetype');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: local('Poppins'), url('/src/assets/fonts/Poppins-Medium-500.ttf') format('truetype');
+    font-weight: 500;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: local('Poppins'), url('/src/assets/fonts/Poppins-SemiBold-600.ttf') format('truetype');
+    font-weight: 600;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: local('Poppins'), url('/src/assets/fonts/Poppins-Bold-700.ttf') format('truetype');
+    font-weight: 700;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
