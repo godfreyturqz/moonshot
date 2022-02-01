@@ -26,3 +26,23 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
+
+:root {
+    --primary: hsl(216, 25%, 20%);
+    --primaryHover: hsl(216, 25%, 10%);
+    --primaryActive: hsl(220, 33%, 4%);
+    --secondary: hsl(188, 86%, 50%);
+    --secondaryHover: hsl(188, 86%, 40%);
+    --secondaryActive: hsl(188, 100%, 23%);
+
+    --light: hsl(220, 20%, 97%);
+    --dark: hsl(217, 28%, 15%);
+
+    --grey: hsl(220, 9%, 46%);
+    --inactive: hsl(214, 6%, 76%);
+    --inactive-100: hsl(214, 6%, 90%);
+    --inactive-200: rgba(0,0,0,0.5);
+
+    --danger: hsl(4, 90%, 58%);
+    --success: hsl(122, 39%, 49%);
+}
