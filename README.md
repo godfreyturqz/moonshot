@@ -6,6 +6,7 @@ Libraries
 - Styled Components
 - Material UI
 - Axios
+- React Router
 
 Notes on setting up/ starting a project
 - Start on sorting the initial assets as per design like fonts

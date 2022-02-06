@@ -1,19 +1,19 @@
-import { createContext } from 'react'
+import { createContext, useState } from 'react'
 
 interface AuthContextType {
-    userId?: string | null 
+    auth?: {} | null
+    setAuth?: React.Dispatch<React.SetStateAction<{}>>
 }
 
-const AuthContext = createContext<AuthContextType>({})
+export const AuthContext = createContext<AuthContextType>({})
 
-const AuthContextProvider: React.FC = ({ children }) => {
+export const AuthContextProvider: React.FC = ({ children }) => {
     
+    const [auth, setAuth] = useState<{} | null>(null)
 
     return (
-        <AuthContext.Provider value={{userId: null}}>
+        <AuthContext.Provider value={{ auth, setAuth }}>
             {children}
         </AuthContext.Provider>
     )
 }
-
-export default AuthContextProvider

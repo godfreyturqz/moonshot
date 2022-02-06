@@ -20,13 +20,6 @@
     font-weight: 700;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
 :root {
     --primary: hsl(216, 25%, 20%);
     --primaryHover: hsl(216, 25%, 10%);
@@ -45,4 +38,15 @@
 
     --danger: hsl(4, 90%, 58%);
     --success: hsl(122, 39%, 49%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+a {
+    text-decoration: none;
 }
