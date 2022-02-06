@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { GridValueGetterParams } from '@mui/x-data-grid'
-import DataTable from '../components/Table'
+import DataTable from '../../components/Table'
 
 
 interface UserDataType {
@@ -43,7 +43,6 @@ const TableListUser = () => {
             const fetchApi = async () => {
                 const { data } = await axios.get('/userData.json')
                 setUserData(data)
-                // console.log(data)
             }
 
             fetchApi()
