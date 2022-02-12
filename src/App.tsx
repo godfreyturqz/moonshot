@@ -1,31 +1,32 @@
-import './styles/App.css'
-import Container from '@mui/material/Container'
-import { Routes, Route, Link } from "react-router-dom"
-import TableListUser from './pages/TableListUser'
-import { AuthContextProvider } from './context/AuthContextProvider'
-import RequireAuth from './utils/RequireAuth'
-import Signin from './pages/Signin'
+import { Routes, Route } from "react-router-dom"
+import { AuthContextProvider } from '@/contexts/AuthContextProvider'
+import Customers from "@/pages/Customers"
+import Details from "@/pages/Details"
+import Form from "@/pages/Form"
+import Sidebar from "@/pages/Sidebar"
+import Signin from "@/pages/SignIn"
+import RequireAuth from '@/utils/RequireAuth'
 
 
 const App: React.FC = () => {
 
-
   return (
     <AuthContextProvider>
-      <Container>
-        <Link to="/">Home</Link>
-        <Link to="/signin">Signin</Link>
-        <Link to="/profile">Profile</Link>
-        <Routes>
-          <Route path="signin" element={<Signin/>} />
-
-          <Route element={<RequireAuth/>}>
-            <Route path="/" element={<TableListUser />} />
-          </Route>
-          
-          <Route path="*" element={<div>404 page</div>} />
-        </Routes>
-      </Container>
+      <div className="flex h-screen">
+        <Sidebar/>
+        <div className="grow" style={{border: '1px solid blue'}}>
+          <Routes>
+            <Route path="signin" element={<Signin/>} />
+            <Route path="*" element={<div>404 page</div>} />
+            <Route element={<RequireAuth/>}>
+              <Route path="dashboard" element={<div>dashboard page</div>} />
+              <Route path="customers" element={<Customers/>} />
+              <Route path="details" element={<Details/>} />
+              <Route path="form" element={<Form/>} />
+            </Route>
+          </Routes>
+        </div>
+      </div>
     </AuthContextProvider>
   )
 }
