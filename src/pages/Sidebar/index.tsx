@@ -6,6 +6,30 @@ import Settings from "@/components/Icons/Settings"
 import Signin from "@/components/Icons/Signin"
 import User from "@/components/Icons/User"
 import Navitem from './Navitem'
+import Divider from "@/components/Layouts/Divider"
+
+
+const Sidebar = () => {
+  return (
+    <div className="flex flex-col bg-gray-800 p-3 min-w-[18rem] ">
+      <div className="p-2">
+        <Logo/>
+      </div>
+      <Divider/>
+        { navItemList.map(item => 
+          <Navitem 
+            key={item.title}
+            to={item.to} 
+            title={item.title} 
+            icon={item.icon}
+          />
+        )}
+      <Divider/>
+    </div>
+  )
+}
+
+export default Sidebar
 
 const navItemList = [
   {
@@ -42,20 +66,5 @@ const navItemList = [
     to: '/signin',
     title: 'Sign-in',
     icon: <Signin/>
-  },
+  }
 ]
-
-const Sidebar = () => {
-  return (
-    <div className="flex flex-col bg-gray-800 p-3">
-      <div className="flex p-3">
-        <Logo/>
-      </div>
-      <div className=""></div>
-      {navItemList
-      .map(item => <Navitem key={item.title} to={item.to} title={item.title} icon={item.icon}/>)}
-    </div>
-  )
-}
-
-export default Sidebar

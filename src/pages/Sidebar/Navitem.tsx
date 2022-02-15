@@ -11,15 +11,15 @@ const Navitem: React.FC<NavitemType> = ({ to, title, icon }) => {
   const location = useLocation()
   const active = location.pathname === to ? true : false
 
+
   return (
     <Link to={to}>
-      <div className="flex p-3 m-1 rounded-lg items-center hover:bg-gray-600 transition">
-        <div className="text-slate-300 pr-3">
-          {icon}
-        </div>
-        <div className="text-slate-300">
-          {title}
-        </div>
+      <div className={`flex px-4 py-2 m-1 rounded-lg items-center hover:bg-gray-700 transition ${active && 'bg-gray-700'}`}>
+        {[icon, title].map(item => 
+            <div className={`text-white pr-3 ${active && 'text-sky-400'}`}>
+              {item}
+            </div>
+        )}
       </div>
     </Link>
   )
