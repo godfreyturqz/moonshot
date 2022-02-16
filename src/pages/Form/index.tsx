@@ -30,7 +30,7 @@ const Form = () => {
 
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <div className="px-4">
         <h3 className="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
         <p className="pt-1 pb-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p>

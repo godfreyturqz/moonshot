@@ -3,20 +3,20 @@ import { AuthContextProvider } from '@/contexts/AuthContextProvider'
 import Customers from "@/pages/Customers"
 import Details from "@/pages/Details"
 import Form from "@/pages/Form"
-import Sidebar from "@/pages/Sidebar"
+import Sidebar from "@/components/shared/Sidebar"
 import Signin from "@/pages/SignIn"
 import RequireAuth from '@/utils/RequireAuth'
+import Navbar from "./components/shared/Navbar"
 
 
 const App: React.FC = () => {
 
   return (
     <AuthContextProvider>
-      <div className="flex flex-row h-screen w-screen bg-gray-200 border-2 border-red-900">
-        <div className="border-2 border-blue-900">
-          <Sidebar/>
-        </div>
-        <div className="border-2 border-green-500">
+      <div className="flex h-screen bg-gray-200">
+        <Sidebar/>
+        <div className="w-full overflow-auto">
+          <Navbar/>
           <Routes>
             <Route path="signin" element={<Signin/>} />
             <Route path="*" element={<div>404 page</div>} />
