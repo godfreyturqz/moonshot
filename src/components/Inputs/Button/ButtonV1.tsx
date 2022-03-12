@@ -1,70 +1,22 @@
-import styled from 'styled-components'
-
 interface ButtonType {
-    onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
-    primary?: boolean
-    secondary?: boolean
-    padding? : string
+  variant?: 'primary' | 'secondary'
 }
 
-const StyledButton = styled.button<ButtonType>`
-    /* Initial */
-    cursor: pointer;
-    border: none;
+const Button: React.FC<ButtonType> = ({ variant, children, ...props }) => {
 
-    /* Appearance */
-    padding: 6px 16px;
-    border-radius: 16px;
-    min-width: 128px;
+  const classNameVariant = {
+    primary: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+    secondary: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+  }
 
-    background-color: ${({ primary, secondary }) =>
-        primary ? `var(--primary)` : null ||
-        secondary ? `var(--secondary)` : null
-    };
-
-    /* Typography */
-    color: ${props =>
-        props.primary ? `var(--light)` : null ||
-        props.secondary ? `var(--dark)` : null
-    };
-    font-weight: 500;
-
-    /* Pseudo */
-    &:hover{
-        background-color: ${props =>
-            props.primary ? `var(--primaryHover)` : null ||
-            props.secondary ? `var(--secondaryHover)` : null
-        };
-        transition: 250ms;
-    }
-    
-    &:active {
-        background-color: ${props =>
-            props.primary ? `var(--primaryActive)` : null ||
-            props.secondary ? `var(--secondaryActive)` : null
-        };
-    }
-`
-
-const ButtonContainer = styled.div<ButtonType>`
-    padding: ${({ padding }) => padding};
-`
-
-const Button: React.FC<ButtonType> = ({
-    children,
-    onClick,
-    ...props
-}) => {
-    return (
-        <ButtonContainer {...props}>
-            <StyledButton
-                onClick={onClick}
-                {...props}
-            >
-                {children}
-            </StyledButton>
-        </ButtonContainer>
-    )
+  return (
+    <button 
+      {...props}
+      className={variant ? classNameVariant[variant] : classNameVariant['primary']}
+    >
+      {children}
+    </button>
+  )
 }
 
 export default Button

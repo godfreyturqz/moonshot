@@ -1,12 +1,14 @@
+// COMPONENTS
+import Divider from "@/components/Layouts/Divider"
+import Navitem from './Navitem'
+// ICONS
 import Dashboard from "@/components/Icons/Dashboard"
 import Database from "@/components/Icons/Database"
 import Logo from "@/components/Icons/Logo"
+import User from "@/components/Icons/User"
 import Users from "@/components/Icons/Users"
 import Settings from "@/components/Icons/Settings"
 import Signin from "@/components/Icons/Signin"
-import User from "@/components/Icons/User"
-import Navitem from './Navitem'
-import Divider from "@/components/Layouts/Divider"
 
 
 const Sidebar = () => {
@@ -25,6 +27,14 @@ const Sidebar = () => {
           />
         )}
       <Divider/>
+        { devItemList.map(item => 
+          <Navitem 
+            key={item.title}
+            to={item.to} 
+            title={item.title} 
+            icon={item.icon}
+          />
+        )}
     </div>
   )
 }
@@ -43,8 +53,8 @@ const navItemList = [
     icon: <User/>
   },
   {
-    to: '/customers',
-    title: 'Customers',
+    to: '/list',
+    title: 'List',
     icon: <Users/>
   },
   {
@@ -66,5 +76,13 @@ const navItemList = [
     to: '/signin',
     title: 'Sign-in',
     icon: <Signin/>
+  }
+]
+
+const devItemList = [
+  {
+    to: '/components',
+    title: 'Components',
+    icon: <Settings/>
   }
 ]
