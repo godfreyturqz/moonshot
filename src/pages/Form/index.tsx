@@ -4,34 +4,38 @@ import Input from '@/components/Inputs/Input/InputV1'
 import Button from '@/components/Inputs/Button'
 // LIBRARIES
 import { nanoid } from 'nanoid'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 // SERVICES
 import { createRecordAPI } from '@/services/fetchRecord'
 
 
-interface UseFormType {
+interface IFormValues {
   firstName: string
   lastName: string
+  email: string
+  contact: string
+  gender: string
+  houseNumber: string
+  street: string
+  barangay: string
+  city: string
+  province: string
 }
 
 const Form = () => {
 
-  const { register, handleSubmit } = useForm<UseFormType>()
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<IFormValues>({})
 
-  const onSubmit: SubmitHandler<UseFormType> = (formData) => {
+  const onSubmit: SubmitHandler<IFormValues> = async (formData) => {
     try {
-      const data = createRecordAPI({...formData, id: nanoid()})
+      const data = createRecordAPI({uid: nanoid(), ...formData})
+      await data && reset({})
       console.log(data)
       
     } catch (error) {
       console.log(error)
     }
-    
   }
-
-  // TODO
-  // What's already done: UIs, install nanoid and react-hook-form, api functions
-  // register each Input using react hook form
 
 
   return (
@@ -50,86 +54,97 @@ const Form = () => {
                 <div className="grid grid-cols-6 gap-4">
                   <div className="col-span-6 sm:col-span-3">
                     <Label>First name</Label>
-                    <Input 
-                      // type="text"
-                      // name="first-name"
-                      // id="first-name"
+                    <Controller
+                      name="firstName"
+                      control={control}
+                      defaultValue=''
+                      rules={{ required: true }}
+                      render={({ field }) => <Input {...field} />}
                     />
+                    <p>{errors.firstName && "First name is required"}</p>
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <Label>Last name</Label>
-                    <Input
-                      // type="text"
-                      // name="last-name"
-                      // id="last-name"
+                    <Controller
+                      name="lastName"
+                      control={control}
+                      defaultValue=''
+                      rules={{ required: true }}
+                      render={({ field }) => <Input {...field} />}
                     />
+                    <p>{errors.lastName && "Last name is required"}</p>
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <Label>Email address</Label>
-                    <Input
-                      // type="text"
-                      // name="email-address"
-                      // id="email-address"
+                    <Controller
+                      name="email"
+                      control={control}
+                      defaultValue=''
+                      render={({ field }) => <Input {...field} />}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-2">
                     <Label>Contact no.</Label>
-                    <Input
-                      // type="text"
-                      // name="email-address"
-                      // id="email-address"
+                    <Controller
+                      name="contact"
+                      control={control}
+                      defaultValue=''
+                      render={({ field }) => <Input {...field} />}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-1">
                     <Label>Gender</Label>
                     <select
-                      id="gender"
-                      name="gender"
-                      autoComplete="gender"
+                      {...register("gender")}
                       className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     >
-                      <option>Male</option>
-                      <option>Female</option>
+                      <option value='male'>Male</option>
+                      <option value='female'>Female</option>
                     </select>
                   </div>
                   <div className="col-span-3">
                     <Label>House/ Unit no.</Label>
-                    <Input
-                      // type="text"
-                      // name="house-number"
-                      // id="house-number"
+                    <Controller
+                      name="houseNumber"
+                      control={control}
+                      defaultValue=''
+                      render={({ field }) => <Input {...field} />}
                     />
                   </div>
                   <div className="col-span-3">
                     <Label>Street address</Label>
-                    <Input
-                      // type="text"
-                      // name="street-address"
-                      // id="street-address"
+                    <Controller
+                      name="street"
+                      control={control}
+                      defaultValue=''
+                      render={({ field }) => <Input {...field} />}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                     <Label>Barangay</Label>
-                    <Input
-                      // type="text"
-                      // name="barangay"
-                      // id="barangay"
+                    <Controller
+                      name="barangay"
+                      control={control}
+                      defaultValue=''
+                      render={({ field }) => <Input {...field} />}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                     <Label>City/ Municipality</Label>
-                    <Input
-                      // type="text"
-                      // name="city-municipality"
-                      // id="city-municipality"
+                    <Controller
+                      name="city"
+                      control={control}
+                      defaultValue=''
+                      render={({ field }) => <Input {...field} />}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                     <Label>Province</Label>
-                    <Input
-                      // type="text"
-                      // name="province"
-                      // id="province"
+                    <Controller
+                      name="province"
+                      control={control}
+                      defaultValue=''
+                      render={({ field }) => <Input {...field} />}
                     />
                   </div>
                 </div>
@@ -147,3 +162,9 @@ const Form = () => {
 }
 
 export default Form
+
+
+// TODO
+// 1. UIs, install nanoid and react-hook-form, API functions - DONE
+// 2. register each Input using react hook form - DONE
+// 3. react-hook-form reset
