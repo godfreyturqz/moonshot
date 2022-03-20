@@ -1,16 +1,16 @@
-// LIBRARIES
-import { Routes, Route } from "react-router-dom"
+// COMPONENTS
+import Sidebar from "@/components/shared/Sidebar"
+import Navbar from "@/components/shared/Navbar"
 // CONTEXT
 import { AuthContextProvider } from '@/contexts/AuthContextProvider'
+// LIBRARIES
+import { Routes, Route } from "react-router-dom"
 // PAGES
-import Components from "./pages/Components"
+import Components from "@/pages/Components"
 import List from "@/pages/List"
 import Details from "@/pages/Details"
 import Form from "@/pages/Form"
 import Signin from "@/pages/SignIn"
-// COMPONENTS
-import Sidebar from "@/components/shared/Sidebar"
-import Navbar from "./components/shared/Navbar"
 // UTILS
 import RequireAuth from '@/utils/RequireAuth'
 

@@ -1,9 +1,10 @@
 import { forwardRef } from 'react'
 
 
-const Input = forwardRef(({...props}) => {
+const Input = forwardRef<HTMLInputElement>(({...props}, ref) => {
   return(
       <input
+        ref={ref}
         {...props}
         type='text'
         autoComplete="off"
@@ -15,4 +16,4 @@ const Input = forwardRef(({...props}) => {
 export default Input
 
 // Note
-// forwardRef was used so it can be used with react-hook-form library
+// forwardRef was used so it can be use with react-hook-form library

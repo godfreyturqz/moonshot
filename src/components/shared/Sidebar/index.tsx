@@ -1,39 +1,50 @@
 // COMPONENTS
 import Divider from "@/components/Layouts/Divider"
-import Navitem from './Navitem'
 // ICONS
 import Dashboard from "@/components/Icons/Dashboard"
 import Database from "@/components/Icons/Database"
 import Logo from "@/components/Icons/Logo"
-import User from "@/components/Icons/User"
-import Users from "@/components/Icons/Users"
 import Settings from "@/components/Icons/Settings"
 import Signin from "@/components/Icons/Signin"
+import User from "@/components/Icons/User"
+import Users from "@/components/Icons/Users"
+// LIBRARIES
+import { nanoid } from 'nanoid/non-secure'
+import { Link, useLocation } from "react-router-dom"
 
 
 const Sidebar = () => {
+
+  const location = useLocation()
+
   return (
     <div className="flex flex-col h-full overflow-auto bg-gray-800 p-3 min-w-[18rem] shadow-2xl shadow-gray-900 z-10">
       <div className="p-2">
         <Logo/>
       </div>
       <Divider/>
-        { navItemList.map(item => 
-          <Navitem 
-            key={item.title}
-            to={item.to} 
-            title={item.title} 
-            icon={item.icon}
-          />
+        { navItemList.map(({to, title, icon}) => 
+          <Link to={to} key={title}>
+            <div className={`flex px-4 py-2 m-1 rounded-lg items-center hover:bg-gray-700 transition ${location.pathname === to && 'bg-gray-700'}`}>
+              {[icon, title].map(item => 
+                  <div key={nanoid(4)} className={`text-white pr-3 ${location.pathname === to && 'text-sky-400'}`}>
+                    {item}
+                  </div>
+              )}
+            </div>
+          </Link>
         )}
       <Divider/>
-        { devItemList.map(item => 
-          <Navitem 
-            key={item.title}
-            to={item.to} 
-            title={item.title} 
-            icon={item.icon}
-          />
+        { devItemList.map(({to, title, icon}) => 
+          <Link to={to} key={title}>
+            <div className={`flex px-4 py-2 m-1 rounded-lg items-center hover:bg-gray-700 transition ${location.pathname === to && 'bg-gray-700'}`}>
+              {[icon, title].map(item => 
+                  <div key={nanoid(4)} className={`text-white pr-3 ${location.pathname === to && 'text-sky-400'}`}>
+                    {item}
+                  </div>
+              )}
+            </div>
+          </Link>
         )}
     </div>
   )

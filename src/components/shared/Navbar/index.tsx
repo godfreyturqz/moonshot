@@ -36,7 +36,7 @@ const Navbar = () => {
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
+                    {/* {navigation.map((item) => (
                       <a
                         key={item.name}
                         href={item.href}
@@ -48,7 +48,7 @@ const Navbar = () => {
                       >
                         {item.name}
                       </a>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
               </div>
@@ -122,7 +122,7 @@ const Navbar = () => {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigation.map((item) => (
+              {/* {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
                   as="a"
@@ -135,7 +135,7 @@ const Navbar = () => {
                 >
                   {item.name}
                 </Disclosure.Button>
-              ))}
+              ))} */}
             </div>
           </Disclosure.Panel>
         </>
