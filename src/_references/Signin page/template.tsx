@@ -1,37 +1,11 @@
 // COMPONENTS
 import Lock from '@/components/Icons/Lock'
 import Logo from '@/components/Icons/Logo'
-// CONTEXTS
-import { useAuthContext } from '@/contexts/useAuthContext'
 // LIBRARIES
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-// SERVICES
-import { loginUser } from '@/services/authentication'
 
-
-interface IFormValues {
-  email: string
-  password: string
-}
 
 const Signin = () => {
-
-  const { register, handleSubmit, reset } = useForm<IFormValues>()
-  const { setAuth } = useAuthContext()
-
-  const onSubmit: SubmitHandler<IFormValues> = async (formData) => {
-
-    console.log(formData)
-    const data: { userId: string } = await loginUser(formData)
-
-    if(data) {
-      reset()
-      setAuth?.(data)
-      localStorage.setItem("user", JSON.stringify(data))
-    }
-  }
-
   return (
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
@@ -45,19 +19,19 @@ const Signin = () => {
               </Link>
             </p>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="mt-8 space-y-6" >
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
                 <label htmlFor="email-address" className="sr-only">
                   Email address
                 </label>
+
                 <input
-                  {...register("email", { required: true })}
-                  id="email"
+                  id="email-address"
                   name="email"
                   type="email"
-                  autoComplete="off"
+                  autoComplete="email"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
@@ -68,11 +42,10 @@ const Signin = () => {
                   Password
                 </label>
                 <input
-                  {...register("password", { required: true })}
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete="off"
+                  autoComplete="current-password"
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"

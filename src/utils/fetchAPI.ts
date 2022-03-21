@@ -1,17 +1,17 @@
-import axios, { AxiosRequestConfig, Method } from 'axios'
+import axios, { Method } from 'axios'
 
 // for dev
-const isCloudServer = false
+const isLocalServer = true
 
 export class FetchAPI {
 
-    private API_BASE_URL: string
-    private httpReqMethod: Method
-    private id: string
-    private objectData: object
+    private API_BASE_URL: string = isLocalServer ? 'http://localhost:5000/api/v1' : 'https://***change this****.herokuapp.com/api/v1'
 
-    constructor(httpReqMethod: Method, id: string = '', objectData: object = {}){
-        this.API_BASE_URL = isCloudServer ? 'https://***change this****.herokuapp.com/api/v1' : 'http://localhost:5000/api/v1'
+    constructor(
+        private httpReqMethod: Method,
+        private id: string = '',
+        private objectData: object = {}
+    ){
         this.httpReqMethod = httpReqMethod
         this.id = id
         this.objectData = objectData
@@ -29,4 +29,5 @@ export class FetchAPI {
     }
 
     toRecord = () => this.axiosRequest('record')
+    toLogin = () => this.axiosRequest('login')
 }

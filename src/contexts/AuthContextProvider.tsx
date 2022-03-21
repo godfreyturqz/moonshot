@@ -9,7 +9,7 @@ export const AuthContext = createContext<AuthContextType>({})
 
 export const AuthContextProvider: React.FC = ({ children }) => {
     
-    const [auth, setAuth] = useState<{} | null>('asd')
+    const [auth, setAuth] = useState<{} | null>()
 
     return (
         <AuthContext.Provider value={{ auth, setAuth }}>

@@ -29,7 +29,7 @@ const Form = () => {
   const onSubmit: SubmitHandler<IFormValues> = async (formData) => {
     try {
       const data = await createRecordAPI({uid: nanoid(), ...formData})
-      await data && reset({})
+      await data && reset()
       console.log(data)
       
     } catch (error) {
