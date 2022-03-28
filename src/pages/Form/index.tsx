@@ -6,7 +6,7 @@ import Button from '@/components/Inputs/Button'
 import { nanoid } from 'nanoid'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 // SERVICES
-import { createRecordAPI } from '@/services/fetchRecord'
+import { createRecord } from '@/services/record'
 
 
 interface IFormValues {
@@ -28,7 +28,7 @@ const Form = () => {
 
   const onSubmit: SubmitHandler<IFormValues> = async (formData) => {
     try {
-      const data = await createRecordAPI({uid: nanoid(), ...formData})
+      const data = await createRecord({uid: nanoid(), ...formData})
       await data && reset()
       console.log(data)
       

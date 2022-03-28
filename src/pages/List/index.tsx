@@ -1,8 +1,66 @@
+import React, { useState, useEffect } from 'react'
 import { people } from './dummyData'
+import { nanoid } from 'nanoid'
 
 
-  
+interface DataType {
+    id: string
+    name: string
+    email: string
+    contact: string
+    gender: string
+    address: string
+    select: boolean
+}
+
 const List = () => {
+
+    const [data, setData] = useState<DataType[]>([])
+
+
+    const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const checked = e.target.checked
+
+        setData(prev => {
+            return prev.map(item => ({
+                ...item,
+                select: checked
+            }))
+        })
+        console.log(data)
+    }
+
+    const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+        
+        setData(prev => {
+            return prev.map(item => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        select: !item.select
+                    }
+                }
+
+                return {...item}
+            })
+        })
+    }
+
+    
+    useEffect(()=> {
+
+        const newPeople = people.map(prev => {
+            return {
+                ...prev,
+                id: nanoid(),
+                select: false
+            }
+        })
+
+        setData(prev => ([...prev, ...newPeople]))
+    
+    }, [])
+    
 
 
     return (
@@ -13,7 +71,11 @@ const List = () => {
                         <thead className="bg-gray-50">
                             <tr>
                                 <Th>
-                                    <input type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"/>
+                                    <input
+                                        type="checkbox"
+                                        onChange={handleAllCheckbox}
+                                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                    />
                                 </Th>
                                 <Th>NAME</Th>
                                 <Th>EMAIL</Th>
@@ -26,16 +88,21 @@ const List = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            { people.map((person) => (
-                                <tr key={person.name}>
+                            { data?.map((item) => (
+                                <tr key={item.id}>
                                     <Td>
-                                        <input type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"/>
+                                        <input 
+                                            type="checkbox"
+                                            checked={item.select}
+                                            onChange={(e) => handleCheckbox(e, item.id)}
+                                            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                        />
                                     </Td>
-                                    <TdName>{person.name}</TdName>
-                                    <Td>{person.email}</Td>
-                                    <Td>{person.contact}</Td>
-                                    <Td>{person.gender}</Td>
-                                    <Td>{person.address}</Td>
+                                    <Td>{item.name}</Td>
+                                    <Td>{item.email}</Td>
+                                    <Td>{item.contact}</Td>
+                                    <Td>{item.gender}</Td>
+                                    <Td>{item.address.substring(0, 30)}...</Td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="#" className="text-indigo-600 hover:text-indigo-900">
                                             Edit
@@ -64,15 +131,7 @@ const Th: React.FC = ({children}) => {
 
 const Td: React.FC = ({children}) => {
     return(
-        <td className="px-6 py-4 text-gray-500 text-sm">
-            {children}
-        </td>
-    )
-}
-
-const TdName: React.FC = ({children}) => {
-    return(
-        <td className="px-6 py-4 text-sm">
+        <td className="px-6 py-4 text-gray-700 text-sm">
             {children}
         </td>
     )

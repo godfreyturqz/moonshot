@@ -1,10 +1,9 @@
-import { FetchAPI } from '@/utils/fetchAPI'
+import Axios from '@/services/axios'
 import { Method } from 'axios'
 
-const func = async (method: Method, id?: string, payload?: object) => {
+const api = async (method: Method, id?: string, payload?: object) => {
     try {
-        const { data } = await new FetchAPI(method, id, payload).toLogin()
-        console.log(data)
+        const { data } = await new Axios(method, id, payload).toLogin()
         return data
         
     } catch (error) {
@@ -13,5 +12,5 @@ const func = async (method: Method, id?: string, payload?: object) => {
 }
 
 export const loginUser = (payload: object) => {
-    return func('POST', '', payload)
+    return api('POST', '', payload)
 }

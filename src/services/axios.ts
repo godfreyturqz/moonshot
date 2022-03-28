@@ -3,9 +3,9 @@ import axios, { Method } from 'axios'
 // for dev
 const isLocalServer = true
 
-export class FetchAPI {
+export default class {
 
-    private API_BASE_URL: string = isLocalServer ? 'http://localhost:5000/api/v1' : 'https://***change this****.herokuapp.com/api/v1'
+    private API_BASE_URL: string = isLocalServer ? 'http://localhost:5000/api/v1' : 'https://yoursite.com/api/v1'
 
     constructor(
         private httpReqMethod: Method,
@@ -17,17 +17,19 @@ export class FetchAPI {
         this.objectData = objectData
     }
 
-    axiosRequest(APIRoute: string){
+    axiosRequest(APIRoute: string) {
+
         const config = {
             url: `${this.API_BASE_URL}/${APIRoute}/${this.id}`,
             method: this.httpReqMethod,
-            data: this.objectData
+            data: this.objectData,
         }
-        const response = axios.request(config)
 
+        const response = axios.request(config)
+        
         return response
     }
 
     toRecord = () => this.axiosRequest('record')
-    toLogin = () => this.axiosRequest('login')
+    toLogin = () => this.axiosRequest('signin')
 }

@@ -2,13 +2,13 @@
 import Lock from '@/components/Icons/Lock'
 import Logo from '@/components/Icons/Logo'
 // CONTEXTS
-import { useAuthContext } from '@/contexts/useAuthContext'
+import useAuthContext from '@/utils/useAuthContext'
 // LIBRARIES
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 // SERVICES
 import { loginUser } from '@/services/authentication'
-
+import { refresh } from '@/services/refreshToken'
 
 interface IFormValues {
   email: string
@@ -18,24 +18,36 @@ interface IFormValues {
 const Signin = () => {
 
   const { register, handleSubmit, reset } = useForm<IFormValues>()
-  const { setAuth } = useAuthContext()
+  const { setAuth, auth } = useAuthContext()
+  const location = useLocation()
+  const navigate = useNavigate()
+  console.log(location)
+  
 
   const onSubmit: SubmitHandler<IFormValues> = async (formData) => {
 
-    console.log(formData)
-    const data: { userId: string } = await loginUser(formData)
+    // step 1 send payload to API
+    const data: { accessToken: string } = await loginUser(formData)
+    // step 2 check if there's a valid response
+    if(!data) return
+    // step 3 clean the form
+    reset()
+    // step 4 set authentication data
+    setAuth?.(data)
+    // step 5 go to home
+    navigate('/')
+  }
 
-    if(data) {
-      reset()
-      setAuth?.(data)
-      localStorage.setItem("user", JSON.stringify(data))
-    }
+  const handleRefreshBtn = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    refresh()
   }
 
   return (
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
+            {JSON.stringify(auth)}
             <Logo/>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
             <p className="mt-2 text-center text-sm text-gray-600">
@@ -59,6 +71,7 @@ const Signin = () => {
                   type="email"
                   autoComplete="off"
                   required
+                  value={'asd12@gmail.com'}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
                 />
@@ -74,6 +87,7 @@ const Signin = () => {
                   type="password"
                   autoComplete="off"
                   required
+                  value={'asdasd'}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
                 />
