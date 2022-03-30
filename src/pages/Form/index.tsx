@@ -1,7 +1,7 @@
 // COMPONENTS
-import Label from '@/components/DataDisplay/Label'
-import Input from '@/components/Inputs/Input/InputV1'
 import Button from '@/components/Inputs/Button'
+import Input from '@/components/Inputs/Input'
+import Label from '@/components/DataDisplay/Label'
 // LIBRARIES
 import { nanoid } from 'nanoid'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'

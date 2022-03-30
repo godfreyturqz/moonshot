@@ -5,10 +5,10 @@ const RequireAuth = () => {
     const location = useLocation()
     const { auth } = useAuthContext()
 
-    // if(auth) return <Outlet/>
-    if(true) return <Outlet/>
+    if(auth) return <Outlet/>
+    // if(true) return <Outlet/>
 
-    // return <Navigate to='/signin' state={{ from: location }} replace/>
+    return <Navigate to='/signin' state={{ from: location }} replace/>
 }
 
 export default RequireAuth

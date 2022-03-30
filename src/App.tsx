@@ -25,7 +25,7 @@ const App: React.FC = () => {
 
           <Route element={<RequireAuth/>}>
             <Route path="list" element={<List/>} />
-            <Route path="dashboard" element={<div className="container mx-auto bg-blue-300">dashboard page</div>} />
+            <Route path="dashboard" element={<div>dashboard page</div>} />
             <Route path="details" element={<Details/>} />
             <Route path="form" element={<Form/>} />
           </Route>

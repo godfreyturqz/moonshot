@@ -17,12 +17,15 @@ export default class {
         this.objectData = objectData
     }
 
-    axiosRequest(APIRoute: string) {
+    private axiosRequest(url: string) {
 
         const config = {
-            url: `${this.API_BASE_URL}/${APIRoute}/${this.id}`,
+            baseURL: this.API_BASE_URL,
+            url: `${url}/${this.id}`,
             method: this.httpReqMethod,
             data: this.objectData,
+            timeout: 3000,
+            withCredentials: true,
         }
 
         const response = axios.request(config)

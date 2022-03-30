@@ -21,7 +21,7 @@ const Signin = () => {
   const { setAuth, auth } = useAuthContext()
   const location = useLocation()
   const navigate = useNavigate()
-  console.log(location)
+  // console.log(location)
   
 
   const onSubmit: SubmitHandler<IFormValues> = async (formData) => {
@@ -35,7 +35,7 @@ const Signin = () => {
     // step 4 set authentication data
     setAuth?.(data)
     // step 5 go to home
-    navigate('/')
+    navigate('/dashboard')
   }
 
   const handleRefreshBtn = (e: React.SyntheticEvent) => {
@@ -126,6 +126,7 @@ const Signin = () => {
               </button>
             </div>
           </form>
+          <button onClick={handleRefreshBtn}>Refresh</button>
         </div>
       </div>
   )
