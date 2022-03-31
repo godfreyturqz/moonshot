@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense, lazy } from 'react'
+// COMPONENTS
+const EditRecordForm = lazy(() => import('@/pages/Form/EditRecordForm'))
+// import EditRecordForm from '@/pages/Form/EditRecordForm'
+// DUMMY
 import { people } from './dummyData'
+// ICONS
+import EditIcon from '@/components/Icons/Pencil'
+// LIBRARIES
 import { nanoid } from 'nanoid'
-import EditForm from '../Form/EditForm'
-import Pencil from '@/components/Icons/Pencil'
+// STYLED COMPONENTS
 import { TableRow } from './TableRow'
 
-interface DataType {
+type DataType = {
 	id: string
 	name: string
 	email: string
@@ -18,6 +24,7 @@ interface DataType {
 const List = () => {
 	const [open, setOpen] = useState(false)
 	const [data, setData] = useState<DataType[]>([])
+	const [editId, setEditId] = useState('')
 
 	const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked
@@ -49,6 +56,11 @@ const List = () => {
 		})
 	}
 
+	const handleEditModal = (id: string) => {
+		setOpen((prev) => !prev)
+		setEditId(id)
+	}
+
 	useEffect(() => {
 		const newPeople = people.map((prev) => {
 			return {
@@ -62,7 +74,7 @@ const List = () => {
 	}, [])
 
 	return (
-		<>
+		<Suspense fallback={'loading'}>
 			<div className="flex flex-col">
 				<div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 					<div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -102,13 +114,12 @@ const List = () => {
 										<Td>{item.contact}</Td>
 										<Td>{item.gender}</Td>
 										<Td>{item.address.substring(0, 50)}...</Td>
-
 										<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 											<button
 												className="text-indigo-600 hover:text-indigo-900"
-												onClick={() => setOpen((prev) => !prev)}
+												onClick={() => handleEditModal(item.id)}
 											>
-												<Pencil />
+												<EditIcon />
 											</button>
 										</td>
 									</TableRow>
@@ -118,8 +129,8 @@ const List = () => {
 					</div>
 				</div>
 			</div>
-			<EditForm open={open} setOpen={setOpen} />
-		</>
+			<EditRecordForm open={open} setOpen={setOpen} id={editId} />
+		</Suspense>
 	)
 }
 
