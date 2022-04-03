@@ -1,7 +1,7 @@
 import Axios from '@/services/axios'
 import { Method } from 'axios'
 
-const recordApi = async (method: Method, id?: string, payload?: object) => {
+const apiFunction = async (method: Method, id?: string, payload?: object) => {
 	try {
 		const { data } = await new Axios(method, id, payload).toRecord()
 		return data
@@ -11,21 +11,21 @@ const recordApi = async (method: Method, id?: string, payload?: object) => {
 }
 
 export const createRecord = (payload: { uid: string }) => {
-	return recordApi('POST', '', payload)
+	return apiFunction('POST', '', payload)
 }
 
 export const deleteOneRecord = (id: string) => {
-	return recordApi('DELETE', id)
+	return apiFunction('DELETE', id)
 }
 
 export const getOneRecord = (id: string) => {
-	return recordApi('GET', id)
+	return apiFunction('GET', id)
 }
 
 export const getRecords = () => {
-	return recordApi('GET')
+	return apiFunction('GET')
 }
 
-export const updateOneRecord = (id: string, payload: object) => {
-	return recordApi('PUT', id, payload)
+export const updateOneRecord = (id: string | undefined, payload: object) => {
+	return apiFunction('PUT', id, payload)
 }

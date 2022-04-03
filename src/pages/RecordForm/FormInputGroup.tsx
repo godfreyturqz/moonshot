@@ -3,31 +3,20 @@ import Button from '@/components/Inputs/Button'
 import Input from '@/components/Inputs/Input'
 import Label from '@/components/DataDisplay/Label'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
+import { FormValues, DataType } from './types'
 
 type FormInputGroup = {
-	onSubmit: SubmitHandler<IFormValues>
+	onSubmit: SubmitHandler<FormValues>
+	recordData?: DataType | null | undefined
 }
 
-interface IFormValues {
-	firstName: string
-	lastName: string
-	email: string
-	contact: string
-	gender: string
-	houseNumber: string
-	street: string
-	barangay: string
-	city: string
-	province: string
-}
-
-const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
+const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit, recordData }) => {
 	const {
 		control,
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<IFormValues>({})
+	} = useForm<FormValues>({})
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
@@ -39,7 +28,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="firstName"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.firstName : ''}
 								rules={{ required: true }}
 								render={({ field }) => <Input {...field} />}
 							/>
@@ -50,7 +39,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="lastName"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.lastName : ''}
 								rules={{ required: true }}
 								render={({ field }) => <Input {...field} />}
 							/>
@@ -61,7 +50,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="email"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.email : ''}
 								render={({ field }) => <Input {...field} />}
 							/>
 						</div>
@@ -70,7 +59,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="contact"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.contact : ''}
 								render={({ field }) => <Input {...field} />}
 							/>
 						</div>
@@ -79,9 +68,20 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<select
 								{...register('gender')}
 								className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+								defaultValue={recordData ? recordData.gender : 'male'}
 							>
-								<option value="male">Male</option>
-								<option value="female">Female</option>
+								<option
+									value="male"
+									// selected={recordData?.gender === 'male' && true}
+								>
+									Male
+								</option>
+								<option
+									value="female"
+									// selected={recordData?.gender === 'female' && true}
+								>
+									Female
+								</option>
 							</select>
 						</div>
 						<div className="col-span-3">
@@ -89,7 +89,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="houseNumber"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.houseNumber : ''}
 								render={({ field }) => <Input {...field} />}
 							/>
 						</div>
@@ -98,7 +98,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="street"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.street : ''}
 								render={({ field }) => <Input {...field} />}
 							/>
 						</div>
@@ -107,7 +107,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="barangay"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.barangay : ''}
 								render={({ field }) => <Input {...field} />}
 							/>
 						</div>
@@ -116,7 +116,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="city"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.city : ''}
 								render={({ field }) => <Input {...field} />}
 							/>
 						</div>
@@ -125,18 +125,18 @@ const FormInputGroup: React.FC<FormInputGroup> = ({ onSubmit }) => {
 							<Controller
 								name="province"
 								control={control}
-								defaultValue=""
+								defaultValue={recordData ? recordData.province : ''}
 								render={({ field }) => <Input {...field} />}
 							/>
 						</div>
 					</div>
 				</div>
-				{/* <div className="px-4 py-3 bg-gray-50 text-left sm:px-6">
+				<div className="px-4 py-3 bg-gray-50 text-left sm:px-6">
 					<Button>Save</Button>
 					<span className="px-3">
 						<Button variant="secondary">Cancel</Button>
 					</span>
-				</div> */}
+				</div>
 			</div>
 		</form>
 	)

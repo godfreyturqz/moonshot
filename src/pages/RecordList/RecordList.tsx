@@ -1,30 +1,36 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react'
 // COMPONENTS
-const EditRecordForm = lazy(() => import('@/pages/Form/EditRecordForm'))
-// import EditRecordForm from '@/pages/Form/EditRecordForm'
-// DUMMY
-import { people } from './dummyData'
+const EditRecordForm = lazy(() => import('@/pages/RecordForm/EditRecordForm'))
 // ICONS
 import EditIcon from '@/components/Icons/Pencil'
 // LIBRARIES
 import { nanoid } from 'nanoid'
 // STYLED COMPONENTS
 import { TableRow } from './TableRow'
+import { getRecords, getOneRecord } from '@/services/record'
 
-type DataType = {
-	id: string
-	name: string
+interface FormValues {
+	firstName: string
+	lastName: string
 	email: string
 	contact: string
 	gender: string
-	address: string
+	houseNumber: string
+	street: string
+	barangay: string
+	city: string
+	province: string
+}
+
+interface DataType extends FormValues {
+	uid: string
 	select: boolean
 }
 
-const List = () => {
+const RecordList = () => {
 	const [open, setOpen] = useState(false)
 	const [data, setData] = useState<DataType[]>([])
-	const [editId, setEditId] = useState('')
+	const [oneRecord, setOneRecord] = useState<DataType | null>()
 
 	const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked
@@ -38,13 +44,10 @@ const List = () => {
 		console.log(data)
 	}
 
-	const handleCheckbox = (
-		e: React.ChangeEvent<HTMLInputElement>,
-		id: string
-	) => {
+	const handleCheckbox = (uid: string) => {
 		setData((prev) => {
 			return prev.map((item) => {
-				if (item.id === id) {
+				if (item.uid === uid) {
 					return {
 						...item,
 						select: !item.select,
@@ -56,21 +59,28 @@ const List = () => {
 		})
 	}
 
-	const handleEditModal = (id: string) => {
+	const handleEditModal = async (uid: string) => {
 		setOpen((prev) => !prev)
-		setEditId(id)
+
+		const oneRecord: DataType = await getOneRecord(uid)
+		setOneRecord((prev) => ({
+			...prev,
+			...oneRecord,
+		}))
 	}
 
 	useEffect(() => {
-		const newPeople = people.map((prev) => {
-			return {
-				...prev,
-				id: nanoid(),
-				select: false,
-			}
-		})
-
-		setData((prev) => [...prev, ...newPeople])
+		const fetchRecord = async () => {
+			const records: DataType[] = await getRecords()
+			const newRecords = records.map((prev) => {
+				return {
+					...prev,
+					select: false,
+				}
+			})
+			setData((prev) => [...prev, ...newRecords])
+		}
+		fetchRecord()
 	}, [])
 
 	return (
@@ -100,24 +110,26 @@ const List = () => {
 							</thead>
 							<tbody className="bg-white divide-y divide-gray-200">
 								{data?.map((item) => (
-									<TableRow key={item.id}>
+									<TableRow key={item.uid}>
 										<Td>
 											<input
 												type="checkbox"
 												checked={item.select}
-												onChange={(e) => handleCheckbox(e, item.id)}
+												onChange={(e) => handleCheckbox(item.uid)}
 												className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
 											/>
 										</Td>
-										<Td>{item.name}</Td>
+										<Td>
+											{item.firstName} {item.lastName}
+										</Td>
 										<Td>{item.email}</Td>
 										<Td>{item.contact}</Td>
 										<Td>{item.gender}</Td>
-										<Td>{item.address.substring(0, 50)}...</Td>
+										<Td>{`${item.houseNumber} ${item.street} st., ${item.barangay}, ${item.city}, ${item.province}`}</Td>
 										<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 											<button
 												className="text-indigo-600 hover:text-indigo-900"
-												onClick={() => handleEditModal(item.id)}
+												onClick={() => handleEditModal(item.uid)}
 											>
 												<EditIcon />
 											</button>
@@ -129,12 +141,14 @@ const List = () => {
 					</div>
 				</div>
 			</div>
-			<EditRecordForm open={open} setOpen={setOpen} id={editId} />
+			{oneRecord && (
+				<EditRecordForm open={open} setOpen={setOpen} recordData={oneRecord} />
+			)}
 		</Suspense>
 	)
 }
 
-export default List
+export default RecordList
 
 const Th: React.FC = ({ children }) => {
 	return (

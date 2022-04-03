@@ -5,24 +5,13 @@ import { nanoid } from 'nanoid'
 import { useForm, SubmitHandler } from 'react-hook-form'
 // SERVICES
 import { createRecord } from '@/services/record'
+// TYPES
+import { FormValues } from './types'
 
-interface IFormValues {
-	firstName: string
-	lastName: string
-	email: string
-	contact: string
-	gender: string
-	houseNumber: string
-	street: string
-	barangay: string
-	city: string
-	province: string
-}
+const CreateRecordForm = () => {
+	const { reset } = useForm<FormValues>({})
 
-const CreateRecord = () => {
-	const { reset } = useForm<IFormValues>({})
-
-	const onSubmit: SubmitHandler<IFormValues> = async (formData) => {
+	const onSubmit: SubmitHandler<FormValues> = async (formData) => {
 		try {
 			const data = await createRecord({ uid: nanoid(), ...formData })
 			;(await data) && reset()
@@ -53,7 +42,7 @@ const CreateRecord = () => {
 	)
 }
 
-export default CreateRecord
+export default CreateRecordForm
 
 // TODO
 // 1. UIs, install nanoid and react-hook-form, API functions - DONE
