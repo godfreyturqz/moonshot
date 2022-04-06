@@ -1,13 +1,8 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react'
-// COMPONENTS
-const EditRecordForm = lazy(() => import('@/pages/RecordForm/EditRecordForm'))
-// ICONS
-import EditIcon from '@/components/Icons/Pencil'
-// LIBRARIES
-import { nanoid } from 'nanoid'
-// STYLED COMPONENTS
-import { TableRow } from './TableRow'
+import { useState, useEffect, Suspense, lazy } from 'react'
+import SkeletonLoader from './SkeletonLoader'
 import { getRecords, getOneRecord } from '@/services/record'
+import Modal from '@/components/Modal/Modal'
+import EditRecordForm from '../RecordForm/EditRecordForm'
 
 interface FormValues {
 	firstName: string
@@ -27,10 +22,21 @@ interface DataType extends FormValues {
 	select: boolean
 }
 
-const RecordList = () => {
-	const [open, setOpen] = useState(false)
+const RecordList: React.FC = () => {
 	const [data, setData] = useState<DataType[]>([])
-	const [oneRecord, setOneRecord] = useState<DataType | null>()
+	const [loading, setLoading] = useState(false)
+
+	const [open, setOpen] = useState(false)
+	const [oneRecord, setOneRecord] = useState<DataType>()
+
+	const handleEditRecordForm = async (uid: string) => {
+		const oneRecord = await getOneRecord(uid)
+		setOneRecord((prev) => ({
+			...prev,
+			...oneRecord,
+		}))
+		oneRecord && setOpen(true)
+	}
 
 	const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked
@@ -41,7 +47,6 @@ const RecordList = () => {
 				select: checked,
 			}))
 		})
-		console.log(data)
 	}
 
 	const handleCheckbox = (uid: string) => {
@@ -59,105 +64,133 @@ const RecordList = () => {
 		})
 	}
 
-	const handleEditModal = async (uid: string) => {
-		setOpen((prev) => !prev)
-
-		const oneRecord: DataType = await getOneRecord(uid)
-		setOneRecord((prev) => ({
-			...prev,
-			...oneRecord,
-		}))
-	}
-
 	useEffect(() => {
-		const fetchRecord = async () => {
-			const records: DataType[] = await getRecords()
-			const newRecords = records.map((prev) => {
-				return {
-					...prev,
-					select: false,
-				}
-			})
-			setData((prev) => [...prev, ...newRecords])
+		try {
+			setLoading(true)
+			;(async () => {
+				const records = await getRecords()
+				const newRecords = records.map((prev) => {
+					return {
+						...prev,
+						select: false,
+					}
+				})
+				setData((prev) => [...prev, ...newRecords])
+				newRecords && setLoading(false)
+			})()
+		} catch (error) {
+			setLoading(true)
 		}
-		fetchRecord()
 	}, [])
 
 	return (
-		<Suspense fallback={'loading'}>
-			<div className="flex flex-col">
-				<div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-					<div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-						<table className="min-w-full divide-y divide-gray-200">
-							<thead className="bg-gray-50">
-								<tr>
-									<Th>
-										<input
-											type="checkbox"
-											onChange={handleAllCheckbox}
-											className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-										/>
-									</Th>
-									<Th>NAME</Th>
-									<Th>EMAIL</Th>
-									<Th>CONTACT</Th>
-									<Th>GENDER</Th>
-									<Th>ADDRESS</Th>
-									<th scope="col" className="relative px-6 py-3">
-										<span className="sr-only">Edit</span>
-									</th>
-								</tr>
-							</thead>
-							<tbody className="bg-white divide-y divide-gray-200">
-								{data?.map((item) => (
-									<TableRow key={item.uid}>
-										<Td>
-											<input
-												type="checkbox"
-												checked={item.select}
-												onChange={(e) => handleCheckbox(item.uid)}
-												className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-											/>
-										</Td>
-										<Td>
-											{item.firstName} {item.lastName}
-										</Td>
-										<Td>{item.email}</Td>
-										<Td>{item.contact}</Td>
-										<Td>{item.gender}</Td>
-										<Td>{`${item.houseNumber} ${item.street} st., ${item.barangay}, ${item.city}, ${item.province}`}</Td>
-										<td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-											<button
-												className="text-indigo-600 hover:text-indigo-900"
-												onClick={() => handleEditModal(item.uid)}
-											>
-												<EditIcon />
-											</button>
-										</td>
-									</TableRow>
-								))}
-							</tbody>
-						</table>
+		<>
+			<Modal open={open} setOpen={setOpen}>
+				<EditRecordForm recordData={oneRecord} />
+			</Modal>
+			<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+				<div className="p-4">
+					<label htmlFor="table-search" className="sr-only">
+						Search
+					</label>
+					<div className="relative mt-1">
+						<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+							<svg
+								className="w-5 h-5 text-gray-500"
+								fill="currentColor"
+								viewBox="0 0 20 20"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									fillRule="evenodd"
+									d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+									clipRule="evenodd"
+								></path>
+							</svg>
+						</div>
+						<input
+							type="text"
+							id="table-search"
+							className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
+							placeholder="Search for items"
+						/>
 					</div>
 				</div>
+				<table className="w-full text-sm text-left text-gray-500">
+					<thead className="text-xs text-gray-200 uppercase bg-gray-700 cursor-default">
+						<tr>
+							<th scope="col" className="p-4">
+								<div className="flex items-center">
+									<input
+										id="checkbox-all-search"
+										type="checkbox"
+										className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+										onChange={handleAllCheckbox}
+									/>
+									<label htmlFor="checkbox-all-search" className="sr-only">
+										checkbox
+									</label>
+								</div>
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Name
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Email
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Contact
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Gender
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Address
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{loading && <SkeletonLoader />}
+						{data?.map((item) => (
+							<tr
+								key={item.uid}
+								className="bg-white border-b hover:bg-gray-200 cursor-pointer"
+								onClick={() => handleEditRecordForm(item.uid)}
+							>
+								<td className="w-4 p-4">
+									<div className="flex items-center">
+										<input
+											id="checkbox-table-search-1"
+											type="checkbox"
+											className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+											checked={item.select}
+											onChange={() => handleCheckbox(item.uid)}
+										/>
+										<label
+											htmlFor="checkbox-table-search-1"
+											className="sr-only"
+										>
+											checkbox
+										</label>
+									</div>
+								</td>
+								<td className="px-6 py-4 text-gray-900">
+									{item.firstName} {item.lastName}
+								</td>
+								<td className="px-6 py-4">{item.email}</td>
+								<td className="px-6 py-4">{item.contact}</td>
+								<td className="px-6 py-4">{item.gender}</td>
+								<td className="px-6 py-4">
+									{item.houseNumber} {item.street}, {item.barangay}, {item.city}
+									, {item.province}
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 			</div>
-			{oneRecord && (
-				<EditRecordForm open={open} setOpen={setOpen} recordData={oneRecord} />
-			)}
-		</Suspense>
+		</>
 	)
 }
 
 export default RecordList
-
-const Th: React.FC = ({ children }) => {
-	return (
-		<th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
-			{children}
-		</th>
-	)
-}
-
-const Td: React.FC = ({ children }) => {
-	return <td className="px-6 py-4 text-gray-700 text-sm">{children}</td>
-}

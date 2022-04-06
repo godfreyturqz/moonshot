@@ -11,7 +11,10 @@ export type FormValues = {
 	province: string
 }
 
-export interface DataType extends FormValues {
+export interface RecordData extends FormValues {
 	uid: string
+}
+
+export interface RecordList extends RecordData {
 	select: boolean
 }

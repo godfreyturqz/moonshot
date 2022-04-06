@@ -8,9 +8,7 @@ export const TableRow = styled.tr`
 
 	td:last-child {
 		visibility: hidden;
-		/* width: 1rem; */
-		/* position: relative; */
-		/* right: 1rem; */
+		width: 0;
 	}
 
 	&:hover {

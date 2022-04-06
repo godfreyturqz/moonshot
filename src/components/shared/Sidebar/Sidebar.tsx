@@ -1,6 +1,7 @@
 // ICONS
 import Dashboard from '@/components/Icons/Dashboard'
 import Database from '@/components/Icons/Database'
+import Document from '@/components/Icons/Document'
 import Logo from '@/components/Icons/Logo'
 import Settings from '@/components/Icons/Settings'
 import Signin from '@/components/Icons/Signin'
@@ -85,7 +86,7 @@ const navItemList = [
 	{
 		to: RECORD_FORM,
 		title: 'Record Form',
-		icon: <Database />,
+		icon: <Document />,
 	},
 	{
 		to: RECORD_LIST,

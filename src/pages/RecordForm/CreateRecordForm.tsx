@@ -1,4 +1,5 @@
 // COMPONENTS
+import Button from '@/components/Inputs/Button'
 import FormInputGroup from './FormInputGroup'
 // LIBRARIES
 import { nanoid } from 'nanoid'
@@ -9,7 +10,8 @@ import { createRecord } from '@/services/record'
 import { FormValues } from './types'
 
 const CreateRecordForm = () => {
-	const { reset } = useForm<FormValues>({})
+	const { register, control, reset, handleSubmit, formState } =
+		useForm<FormValues>({})
 
 	const onSubmit: SubmitHandler<FormValues> = async (formData) => {
 		try {
@@ -35,7 +37,19 @@ const CreateRecordForm = () => {
 					</div>
 				</div>
 				<div className="mt-5 md:mt-0 md:col-span-2">
-					<FormInputGroup onSubmit={onSubmit} />
+					<form onSubmit={handleSubmit(onSubmit)}>
+						<FormInputGroup
+							control={control}
+							formState={formState}
+							register={register}
+						/>
+						<div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+							<span className="px-3">
+								<Button variant="secondary">Cancel</Button>
+							</span>
+							<Button>Save</Button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

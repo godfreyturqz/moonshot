@@ -1,25 +1,20 @@
-import { useEffect } from 'react'
 // COMPONENTS
 import FormInputGroup from './FormInputGroup'
-import Modal from '@/components/Modal'
+import Modal from '@/components/Modal/Modal'
 // LIBRARIES
-import { SubmitHandler } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 // SERVICES
 import { updateOneRecord } from '@/services/record'
 // TYPES
-import { FormValues, DataType } from './types'
+import { FormValues, RecordData } from './types'
 
 type EditRecordFormType = {
-	open: boolean
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>
-	recordData: DataType | null | undefined
+	recordData: RecordData | undefined
 }
 
-const EditRecordForm: React.FC<EditRecordFormType> = ({
-	open,
-	setOpen,
-	recordData,
-}) => {
+const EditRecordForm: React.FC<EditRecordFormType> = ({ recordData }) => {
+	const { register, control, reset, handleSubmit, formState } =
+		useForm<FormValues>({})
 	const onSubmit: SubmitHandler<FormValues> = async (formData) => {
 		try {
 			const data = await updateOneRecord(recordData?.uid, { ...formData })
@@ -30,12 +25,21 @@ const EditRecordForm: React.FC<EditRecordFormType> = ({
 	}
 
 	return (
-		<Modal open={open} setOpen={setOpen}>
-			<div>
-				<p>{recordData?.uid}</p>
-				<FormInputGroup onSubmit={onSubmit} recordData={recordData} />
+		<div>
+			<h3 className="text-gray-900">Edit Information</h3>
+			<p className="text-sm text-gray-500 mt-2">Click save when done</p>
+			<div className="mt-2">
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<FormInputGroup
+						recordData={recordData}
+						register={register}
+						control={control}
+						formState={formState}
+					/>
+					<button>save</button>
+				</form>
 			</div>
-		</Modal>
+		</div>
 	)
 }
 
