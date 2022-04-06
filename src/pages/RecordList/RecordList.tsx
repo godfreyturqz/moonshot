@@ -1,8 +1,12 @@
 import { useState, useEffect, Suspense, lazy } from 'react'
+// COMPONENTS
+const EditRecordForm = lazy(() => import('@/pages/RecordForm/EditRecordForm'))
+const Modal = lazy(() => import('@/components/Modal/Modal'))
+import DataNotFound from './DataNotFound'
 import SkeletonLoader from './SkeletonLoader'
+import Spinner from './Spinner'
+// SERVICES
 import { getRecords, getOneRecord } from '@/services/record'
-import Modal from '@/components/Modal/Modal'
-import EditRecordForm from '../RecordForm/EditRecordForm'
 
 interface FormValues {
 	firstName: string
@@ -68,7 +72,7 @@ const RecordList: React.FC = () => {
 		try {
 			setLoading(true)
 			;(async () => {
-				const records = await getRecords()
+				const records: DataType[] = await getRecords()
 				const newRecords = records.map((prev) => {
 					return {
 						...prev,
@@ -76,15 +80,18 @@ const RecordList: React.FC = () => {
 					}
 				})
 				setData((prev) => [...prev, ...newRecords])
-				newRecords && setLoading(false)
+				setLoading(false)
 			})()
 		} catch (error) {
-			setLoading(true)
+			console.log(error)
+			setLoading(false)
+		} finally {
+			setLoading(false)
 		}
 	}, [])
 
 	return (
-		<>
+		<Suspense fallback={<Spinner />}>
 			<Modal open={open} setOpen={setOpen}>
 				<EditRecordForm recordData={oneRecord} />
 			</Modal>
@@ -188,8 +195,9 @@ const RecordList: React.FC = () => {
 						))}
 					</tbody>
 				</table>
+				{data?.length === 0 && <DataNotFound />}
 			</div>
-		</>
+		</Suspense>
 	)
 }
 

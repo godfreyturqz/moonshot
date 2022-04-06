@@ -20,7 +20,6 @@ const apiFunction = async (method: Method, id?: string, payload?: object) => {
 		const { data } = await new Axios(method, id, payload).toRecord()
 		return data
 	} catch (error) {
-		console.log(error)
 		throw error
 	}
 }
@@ -37,7 +36,7 @@ export const getOneRecord = (id: string) => {
 	return apiFunction('GET', id)
 }
 
-export const getRecords: () => Promise<RecordType[]> = () => {
+export const getRecords = () => {
 	return apiFunction('GET')
 }
 
