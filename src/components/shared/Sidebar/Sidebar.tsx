@@ -7,7 +7,7 @@ import Settings from '@/components/Icons/Settings'
 import Signin from '@/components/Icons/Signin'
 import User from '@/components/Icons/User'
 import Users from '@/components/Icons/Users'
-import { RECORD_DETAILS, RECORD_FORM, RECORD_LIST } from '@/constants/route'
+import { RECORD_DETAILS, RECORD_FORM, RECORD_LIST } from '@/constants/routes'
 // LIBRARIES
 import { nanoid } from 'nanoid/non-secure'
 import { Link, useLocation } from 'react-router-dom'
@@ -104,7 +104,7 @@ const navItemList = [
 		icon: <Settings />,
 	},
 	{
-		to: '/signin',
+		to: 'signin',
 		title: 'Sign-in',
 		icon: <Signin />,
 	},

@@ -1,6 +1,7 @@
 interface ButtonType {
 	variant?: 'primary' | 'secondary'
-	onClick?: () => void
+	// onClick?: () => void
+	onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
 const Button: React.FC<ButtonType> = ({

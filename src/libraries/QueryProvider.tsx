@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
 
-const QueryProvider: React.FC = ({ children }) => {
+export const QueryProvider: React.FC = ({ children }) => {
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -15,5 +15,3 @@ const QueryProvider: React.FC = ({ children }) => {
 		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 	)
 }
-
-export default QueryProvider
