@@ -1,13 +1,10 @@
 import { useState, useEffect, Suspense, lazy } from 'react'
 // COMPONENTS
-import DataNotFound from './DataNotFound'
+import DataNotFound from '../pages/RecordList/DataNotFound'
 import EditRecordForm from '@/pages/RecordForm/EditRecordForm'
 import Modal from '@/components/Modal/Modal'
-import SkeletonLoader from './SkeletonLoader'
-import Spinner from './Spinner'
-// REACT QUERY
-import { useQuery } from 'react-query'
-import { useRecordQuery } from '@/utils/useRecordQuery'
+import SkeletonLoader from '../pages/RecordList/SkeletonLoader'
+import Spinner from '../pages/RecordList/Spinner'
 // SERVICES
 import { getRecords, getOneRecord } from '@/services/record'
 
@@ -30,29 +27,19 @@ interface DataType extends FormValues {
 }
 
 const RecordList: React.FC = () => {
-	const { data: records, isLoading } = useQuery('RECORDS', getRecords)
 	const [data, setData] = useState<DataType[]>([])
-	const [uid, setUid] = useState('')
-
-	const { data: oneRecord } = useQuery<DataType>(['RECORDS', uid], () =>
-		getOneRecord(uid)
-	)
+	const [loading, setLoading] = useState(false)
 
 	const [open, setOpen] = useState(false)
-	// const [oneRecord, setOneRecord] = useState<DataType>()
+	const [oneRecord, setOneRecord] = useState<DataType>()
 
-	const handleEditRecordForm = async (id: string) => {
-		setUid(id)
-		// const { data } = useQuery<DataType>(['RECORDS', uid], () =>
-		// getOneRecord(uid)
-		// )
-		// console.log(data)
-		// const oneRecord = await getOneRecord(uid)
-		// setOneRecord((prev) => ({
-		// 	...prev,
-		// 	...data,
-		// }))
-		// one && setOpen(true)
+	const handleEditRecordForm = async (uid: string) => {
+		const oneRecord = await getOneRecord(uid)
+		setOneRecord((prev) => ({
+			...prev,
+			...oneRecord,
+		}))
+		oneRecord && setOpen(true)
 	}
 
 	const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,14 +69,26 @@ const RecordList: React.FC = () => {
 	}
 
 	useEffect(() => {
-		const newRecords = records?.map((prev: DataType) => ({
-			...prev,
-			select: false,
-		}))
-
-		newRecords && setData((prev) => [...prev, ...newRecords])
-		// isLoading is a dependency so that the table refreshes after loading is done
-	}, [isLoading])
+		try {
+			setLoading(true)
+			;(async () => {
+				const records: DataType[] = await getRecords()
+				const newRecords = records.map((prev) => {
+					return {
+						...prev,
+						select: false,
+					}
+				})
+				setData((prev) => [...prev, ...newRecords])
+				setLoading(false)
+			})()
+		} catch (error) {
+			console.log(error)
+			setLoading(false)
+		} finally {
+			setLoading(false)
+		}
+	}, [])
 
 	return (
 		<Suspense fallback={<Spinner />}>
@@ -156,7 +155,7 @@ const RecordList: React.FC = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{isLoading && <SkeletonLoader />}
+						{loading && <SkeletonLoader />}
 						{data?.map((item) => (
 							<tr
 								key={item.uid}

@@ -1,6 +1,6 @@
 // COMPONENTS
+import Button from '@/components/Inputs/Button'
 import FormInputGroup from './FormInputGroup'
-import Modal from '@/components/Modal/Modal'
 // LIBRARIES
 import { SubmitHandler, useForm } from 'react-hook-form'
 // SERVICES
@@ -10,15 +10,21 @@ import { FormValues, RecordData } from './types'
 
 type EditRecordFormType = {
 	recordData: RecordData | undefined
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const EditRecordForm: React.FC<EditRecordFormType> = ({ recordData }) => {
+const EditRecordForm: React.FC<EditRecordFormType> = ({
+	recordData,
+	setOpen,
+}) => {
 	const { register, control, reset, handleSubmit, formState } =
 		useForm<FormValues>({})
+
 	const onSubmit: SubmitHandler<FormValues> = async (formData) => {
 		try {
 			const data = await updateOneRecord(recordData?.uid, { ...formData })
 			console.log(data)
+			setOpen(false)
 		} catch (error) {
 			console.log(error)
 		}
@@ -31,12 +37,19 @@ const EditRecordForm: React.FC<EditRecordFormType> = ({ recordData }) => {
 			<div className="mt-2">
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<FormInputGroup
-						recordData={recordData}
 						register={register}
 						control={control}
 						formState={formState}
+						recordData={recordData}
 					/>
-					<button>save</button>
+					<div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+						<span className="px-3">
+							<Button variant="secondary" onClick={() => setOpen(false)}>
+								Cancel
+							</Button>
+						</span>
+						<Button>Save</Button>
+					</div>
 				</form>
 			</div>
 		</div>

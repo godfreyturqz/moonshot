@@ -15,7 +15,7 @@ type FormInputGroup = {
 	register: UseFormRegister<FormValues>
 	control: Control<FormValues>
 	formState: FormState<FormValues>
-	recordData: RecordData | undefined
+	recordData?: RecordData | undefined
 }
 
 const FormInputGroup: React.FC<FormInputGroup> = ({

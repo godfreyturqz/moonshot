@@ -36,6 +36,7 @@ export const getOneRecord = (id: string) => {
 	return apiFunction('GET', id)
 }
 
+// export const getRecords: () => Promise<RecordType[]> = () => {
 export const getRecords = () => {
 	return apiFunction('GET')
 }
