@@ -1,57 +1,65 @@
 // COMPONENTS
 import Lock from '@/components/Icons/Lock'
 import Logo from '@/components/Icons/Logo'
+// CONSTANTS
+import { DASHBOARD, SIGN_UP } from '@/constants/routes'
 // CONTEXTS
 import { useAuthContext } from '@/contexts/AuthContextProvider'
 // LIBRARIES
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 // SERVICES
-import { loginUser } from '@/services/authentication'
-import { refresh } from '@/services/refreshToken'
+import { APIService } from '@/services/axios'
 
-interface IFormValues {
+type FormValuesType = {
 	email: string
 	password: string
 }
 
 const Signin = () => {
-	const { register, handleSubmit, reset } = useForm<IFormValues>()
-	const { auth, setAuth } = useAuthContext()
-	const location = useLocation()
+	const { register, handleSubmit, reset } = useForm<FormValuesType>()
+	const { setAuth } = useAuthContext()
 	const navigate = useNavigate()
-	// console.log(location)
 
-	const onSubmit: SubmitHandler<IFormValues> = async (formData) => {
-		// step 1 send payload to API
-		const data: { accessToken: string } = await loginUser(formData)
-		// step 2 check if there's a valid response
-		if (!data) return
-		// step 3 clean the form
-		reset()
-		// step 4 set authentication data
-		setAuth?.(data)
-		// step 5 go to home
-		navigate('/dashboard')
+	const onSubmit: SubmitHandler<FormValuesType> = async (formData) => {
+		// Logic flow
+		// 1. send payload thru API service
+		// 2. check if there's a valid response
+		// 3. clean the form
+		// 4. set authentication data
+		// 5. navigate to desired route i.e. '/dashboard'
+
+		try {
+			const { data } = await new APIService('POST', '', formData).signin()
+			if (!data) return
+			reset()
+			setAuth({ accessToken: data.accessToken })
+			navigate(DASHBOARD)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
-	const handleRefreshBtn = (e: React.SyntheticEvent) => {
+	const handleRefreshToken = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		refresh()
+		const { data } = await new APIService('GET').refreshToken()
+		setAuth((prev) => ({
+			...prev,
+			accessToken: data.accessToken,
+		}))
 	}
 
 	return (
 		<div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-md w-full space-y-8">
 				<div>
-					{JSON.stringify(auth)}
 					<Logo />
 					<h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
 						Sign in to your account
 					</h2>
 					<p className="mt-2 text-center text-sm text-gray-600">
 						Or{' '}
-						<Link to="/register">
+						<Link to={SIGN_UP}>
 							<span className="font-medium text-indigo-600 hover:text-indigo-500">
 								create an account
 							</span>
@@ -133,7 +141,7 @@ const Signin = () => {
 						</button>
 					</div>
 				</form>
-				<button onClick={handleRefreshBtn}>Refresh</button>
+				<button onClick={handleRefreshToken}>Refresh</button>
 			</div>
 		</div>
 	)
