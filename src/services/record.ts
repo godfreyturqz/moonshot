@@ -3,7 +3,7 @@ import { Method } from 'axios'
 
 const apiFunction = async (method: Method, id?: string, payload?: object) => {
 	try {
-		const { data } = await new APIService(method, id, payload).toRecord()
+		const { data } = await new APIService(method, id, payload).record()
 		return data
 	} catch (error) {
 		throw error

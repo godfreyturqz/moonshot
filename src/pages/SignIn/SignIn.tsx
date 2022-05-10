@@ -11,11 +11,17 @@ import { Link, useNavigate } from 'react-router-dom'
 // SERVICES
 import { APIService } from '@/services/axios'
 
+//---------------
+// TYPES
+//---------------
 type FormValuesType = {
 	email: string
 	password: string
 }
 
+//---------------
+// MAIN COMPONENT
+//---------------
 const Signin = () => {
 	const { register, handleSubmit, reset } = useForm<FormValuesType>()
 	const { setAuth } = useAuthContext()
@@ -33,20 +39,14 @@ const Signin = () => {
 			const { data } = await new APIService('POST', '', formData).signin()
 			if (!data) return
 			reset()
-			setAuth({ accessToken: data.accessToken })
+			setAuth((prev) => ({
+				...prev,
+				accessToken: data.accessToken,
+			}))
 			navigate(DASHBOARD)
 		} catch (error) {
 			console.log(error)
 		}
-	}
-
-	const handleRefreshToken = async (e: React.SyntheticEvent) => {
-		e.preventDefault()
-		const { data } = await new APIService('GET').refreshToken()
-		setAuth((prev) => ({
-			...prev,
-			accessToken: data.accessToken,
-		}))
 	}
 
 	return (
@@ -141,7 +141,6 @@ const Signin = () => {
 						</button>
 					</div>
 				</form>
-				<button onClick={handleRefreshToken}>Refresh</button>
 			</div>
 		</div>
 	)

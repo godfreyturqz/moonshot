@@ -30,11 +30,26 @@ export class APIService {
 		}
 
 		const response = axios.request(config)
-
 		return response
 	}
 
-	record = (): Promise<AxiosResponse<RecordType>> => this.axiosRequest('record')
+	private axiosRequestPrivate(url: string) {
+		const config = {
+			baseURL: this.API_BASE_URL,
+			url: `${url}/${this.id}`,
+			method: this.httpReqMethod,
+			data: this.objectData,
+			timeout: 3000,
+			withCredentials: true,
+			headers: { Authorization: `Bearer mytoke` },
+		}
+
+		const response = axios.request(config)
+		return response
+	}
+
+	record = (): Promise<AxiosResponse<RecordType[]>> =>
+		this.axiosRequestPrivate('record')
 
 	signin = (): Promise<AxiosResponse<{ accessToken: string }>> =>
 		this.axiosRequest('signin')

@@ -34,9 +34,9 @@ const RecordList: React.FC = () => {
 	const [data, setData] = useState<DataType[]>([])
 	const [uid, setUid] = useState('')
 
-	const { data: oneRecord } = useQuery<DataType>(['RECORDS', uid], () =>
-		getOneRecord(uid)
-	)
+	// const { data: oneRecord } = useQuery<DataType>(['RECORDS', uid], () =>
+	// 	getOneRecord(uid)
+	// )
 
 	const [open, setOpen] = useState(false)
 	// const [oneRecord, setOneRecord] = useState<DataType>()
@@ -82,7 +82,7 @@ const RecordList: React.FC = () => {
 	}
 
 	useEffect(() => {
-		const newRecords = records?.map((prev: DataType) => ({
+		const newRecords = records?.map((prev) => ({
 			...prev,
 			select: false,
 		}))
@@ -196,7 +196,7 @@ const RecordList: React.FC = () => {
 				</table>
 				{data?.length === 0 && <DataNotFound />}
 				<Modal open={open} setOpen={setOpen}>
-					<EditRecordForm recordData={oneRecord} setOpen={setOpen} />
+					{/* <EditRecordForm recordData={oneRecord} setOpen={setOpen} /> */}
 				</Modal>
 			</div>
 		</Suspense>
