@@ -4,7 +4,7 @@ import FormInputGroup from './FormInputGroup'
 // LIBRARIES
 import { SubmitHandler, useForm } from 'react-hook-form'
 // SERVICES
-import { updateOneRecord } from '@/services/record'
+import useRecordService from '@/services/useRecordService'
 // TYPES
 import { FormValues, RecordData } from './types'
 
@@ -17,6 +17,7 @@ const EditRecordForm: React.FC<EditRecordFormType> = ({
 	recordData,
 	setOpen,
 }) => {
+	const { updateOneRecord } = useRecordService()
 	const { register, control, reset, handleSubmit, formState } =
 		useForm<FormValues>({})
 

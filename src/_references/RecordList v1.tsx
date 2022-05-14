@@ -6,7 +6,7 @@ import Modal from '@/components/Modal/Modal'
 import SkeletonLoader from '../pages/RecordList/SkeletonLoader'
 import Spinner from '../pages/RecordList/Spinner'
 // SERVICES
-import { getRecords, getOneRecord } from '@/services/record'
+import { getRecords, getOneRecord } from '@/services/recordService'
 
 interface FormValues {
 	firstName: string

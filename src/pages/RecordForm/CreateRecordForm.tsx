@@ -5,11 +5,12 @@ import FormInputGroup from './FormInputGroup'
 import { nanoid } from 'nanoid'
 import { useForm, SubmitHandler } from 'react-hook-form'
 // SERVICES
-import { createRecord } from '@/services/record'
+import useRecordService from '@/services/useRecordService'
 // TYPES
 import { FormValues } from './types'
 
 const CreateRecordForm = () => {
+	const { createRecord } = useRecordService()
 	const { register, control, reset, handleSubmit, formState } =
 		useForm<FormValues>({})
 

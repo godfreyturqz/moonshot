@@ -7,15 +7,17 @@ import {
 } from 'react'
 
 type AuthContextType = {
-	auth: null | {}
-	setAuth: Dispatch<SetStateAction<null | {}>>
+	auth: null | { accessToken: string }
+	setAuth: Dispatch<SetStateAction<null | { accessToken: string }>>
 }
 
-const AuthContext = createContext({} as AuthContextType)
+export const AuthContext = createContext({} as AuthContextType)
 
 // 1. Use for wrapping the App
 export const AuthContextProvider: React.FC = ({ children }) => {
-	const [auth, setAuth] = useState<null | {}>(null)
+	const [auth, setAuth] = useState<null | { accessToken: string }>({
+		accessToken: '',
+	})
 
 	return (
 		<AuthContext.Provider value={{ auth, setAuth }}>

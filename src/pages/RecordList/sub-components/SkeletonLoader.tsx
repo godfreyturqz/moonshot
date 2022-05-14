@@ -4,22 +4,22 @@ const SkeletonLoader = () => {
 	for (let index = 0; index < rowNumber; index++) {
 		rows.push(
 			<tr key={index} className="bg-white border-b animate-pulse h-5">
-				<td className="p-5">
+				<td className="p-4 w-4">
 					<div className="bg-slate-300 rounded p-2"></div>
 				</td>
-				<td className="px-5 py-3">
+				<td className="p-4">
 					<div className="bg-slate-300 rounded p-2"></div>
 				</td>
-				<td className="px-5 py-3">
+				<td className="p-4">
 					<div className="bg-slate-300 rounded p-2"></div>
 				</td>
-				<td className="px-5 py-3">
+				<td className="p-4">
 					<div className="bg-slate-300 rounded p-2"></div>
 				</td>
-				<td className="px-5 py-3">
+				<td className="p-4">
 					<div className="bg-slate-300 rounded p-2"></div>
 				</td>
-				<td className="px-5 py-3">
+				<td className="p-4">
 					<div className="bg-slate-300 rounded p-2"></div>
 				</td>
 			</tr>

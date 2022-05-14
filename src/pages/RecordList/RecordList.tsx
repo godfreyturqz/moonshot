@@ -1,37 +1,32 @@
-import { useState, useEffect, Suspense, lazy } from 'react'
+import { useState, useEffect } from 'react'
+// LIBRARIES
+import { useQuery } from 'react-query'
 // COMPONENTS
-import DataNotFound from './DataNotFound'
 import EditRecordForm from '@/pages/RecordForm/EditRecordForm'
 import Modal from '@/components/Modal/Modal'
-import SkeletonLoader from './SkeletonLoader'
-import Spinner from './Spinner'
-// REACT QUERY
-import { useQuery } from 'react-query'
-import { useRecordQuery } from '@/utils/useRecordQuery'
+// SUB-COMPONENTS
+import DataNotFound from './sub-components/DataNotFound'
+import SearchField from './sub-components/SearchField'
+import SkeletonLoader from './sub-components/SkeletonLoader'
 // SERVICES
-import { getRecords, getOneRecord } from '@/services/record'
+import useRecordService from '@/services/useRecordService'
+// TYPES
+import { RecordType } from '@/services/record.types'
 
-interface FormValues {
-	firstName: string
-	lastName: string
-	email: string
-	contact: string
-	gender: string
-	houseNumber: string
-	street: string
-	barangay: string
-	city: string
-	province: string
-}
-
-interface DataType extends FormValues {
-	uid: string
-	select: boolean
+type TableListType = RecordType & {
+	isSelected: boolean
 }
 
 const RecordList: React.FC = () => {
-	const { data: records, isLoading } = useQuery('RECORDS', getRecords)
-	const [data, setData] = useState<DataType[]>([])
+	const { getRecords } = useRecordService()
+	const {
+		data: recordList,
+		isLoading,
+		isError,
+		error,
+	} = useQuery('RECORDS', getRecords)
+	const [tableList, setTableList] = useState<TableListType[]>([])
+
 	const [uid, setUid] = useState('')
 
 	// const { data: oneRecord } = useQuery<DataType>(['RECORDS', uid], () =>
@@ -58,106 +53,78 @@ const RecordList: React.FC = () => {
 	const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked
 
-		setData((prev) => {
-			return prev.map((item) => ({
+		setTableList((prev) =>
+			prev.map((item) => ({
 				...item,
-				select: checked,
+				isSelected: checked,
 			}))
-		})
+		)
 	}
 
 	const handleCheckbox = (uid: string) => {
-		setData((prev) => {
-			return prev.map((item) => {
+		setTableList((prev) =>
+			prev.map((item) => {
 				if (item.uid === uid) {
 					return {
 						...item,
-						select: !item.select,
+						isSelected: !item.isSelected,
 					}
 				}
 
 				return { ...item }
 			})
-		})
+		)
 	}
 
 	useEffect(() => {
-		const newRecords = records?.map((prev) => ({
+		const newRecords = recordList?.map((prev) => ({
 			...prev,
-			select: false,
+			isSelected: false,
 		}))
-
-		newRecords && setData((prev) => [...prev, ...newRecords])
-		// isLoading is a dependency so that the table refreshes after loading is done
-	}, [isLoading])
+		newRecords && setTableList((prev) => [...prev, ...newRecords])
+	}, [recordList])
 
 	return (
-		<Suspense fallback={<Spinner />}>
-			<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-				{/* Search Field */}
-				<div className="p-4">
-					<label htmlFor="table-search" className="sr-only">
-						Search
-					</label>
-					<div className="relative mt-1">
-						<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-							<svg
-								className="w-5 h-5 text-gray-500"
-								fill="currentColor"
-								viewBox="0 0 20 20"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									fillRule="evenodd"
-									d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-									clipRule="evenodd"
-								></path>
-							</svg>
-						</div>
-						<input
-							type="text"
-							id="table-search"
-							className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5"
-							placeholder="Search for items"
-						/>
-					</div>
-				</div>
-				<table className="w-full text-sm text-left text-gray-500">
-					<thead className="text-xs text-gray-200 uppercase bg-gray-700 cursor-default">
-						<tr>
-							<th scope="col" className="p-4">
-								<div className="flex items-center">
-									<input
-										id="checkbox-all-search"
-										type="checkbox"
-										className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-										onChange={handleAllCheckbox}
-									/>
-									<label htmlFor="checkbox-all-search" className="sr-only">
-										checkbox
-									</label>
-								</div>
-							</th>
-							<th scope="col" className="px-6 py-3">
-								Name
-							</th>
-							<th scope="col" className="px-6 py-3">
-								Email
-							</th>
-							<th scope="col" className="px-6 py-3">
-								Contact
-							</th>
-							<th scope="col" className="px-6 py-3">
-								Gender
-							</th>
-							<th scope="col" className="px-6 py-3">
-								Address
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{isLoading && <SkeletonLoader />}
-						{data?.map((item) => (
+		<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+			<SearchField />
+			<table className="w-full text-sm text-left text-gray-500">
+				<thead className="text-xs text-gray-200 uppercase bg-gray-700 cursor-default">
+					<tr>
+						<th scope="col" className="p-4 w-4">
+							<div className="flex items-center">
+								<input
+									id="checkbox-all-search"
+									className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+									type="checkbox"
+									onChange={handleAllCheckbox}
+								/>
+								<label htmlFor="checkbox-all-search" className="sr-only">
+									checkbox
+								</label>
+							</div>
+						</th>
+						<th scope="col" className="px-6 py-3">
+							Name
+						</th>
+						<th scope="col" className="px-6 py-3">
+							Email
+						</th>
+						<th scope="col" className="px-6 py-3">
+							Contact
+						</th>
+						<th scope="col" className="px-6 py-3">
+							Gender
+						</th>
+						<th scope="col" className="px-6 py-3">
+							Address
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{isLoading ? (
+						<SkeletonLoader />
+					) : (
+						tableList?.map((item) => (
 							<tr
 								key={item.uid}
 								className="bg-white border-b hover:bg-gray-200 cursor-pointer"
@@ -169,7 +136,7 @@ const RecordList: React.FC = () => {
 											id="checkbox-table-search-1"
 											type="checkbox"
 											className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-											checked={item.select}
+											checked={item.isSelected}
 											onChange={() => handleCheckbox(item.uid)}
 										/>
 										<label
@@ -191,15 +158,15 @@ const RecordList: React.FC = () => {
 									, {item.province}
 								</td>
 							</tr>
-						))}
-					</tbody>
-				</table>
-				{data?.length === 0 && <DataNotFound />}
-				<Modal open={open} setOpen={setOpen}>
-					{/* <EditRecordForm recordData={oneRecord} setOpen={setOpen} /> */}
-				</Modal>
-			</div>
-		</Suspense>
+						))
+					)}
+				</tbody>
+			</table>
+			{!isLoading && tableList?.length === 0 && <DataNotFound />}
+			<Modal open={open} setOpen={setOpen}>
+				{/* <EditRecordForm recordData={oneRecord} setOpen={setOpen} /> */}
+			</Modal>
+		</div>
 	)
 }
 

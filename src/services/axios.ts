@@ -1,5 +1,4 @@
 import axios, { Method, AxiosResponse } from 'axios'
-import { RecordType } from './axios.types'
 
 // for dev
 const isLocalServer = true
@@ -19,7 +18,7 @@ export class APIService {
 		this.objectData = objectData
 	}
 
-	private axiosRequest(url: string) {
+	private axiosRequest(url: string, accessToken?: string) {
 		const config = {
 			baseURL: this.API_BASE_URL,
 			url: `${url}/${this.id}`,
@@ -27,29 +26,17 @@ export class APIService {
 			data: this.objectData,
 			timeout: 3000,
 			withCredentials: true,
+			...(accessToken && {
+				headers: { Authorization: `Bearer ${accessToken}` },
+			}),
 		}
 
 		const response = axios.request(config)
 		return response
 	}
 
-	private axiosRequestPrivate(url: string) {
-		const config = {
-			baseURL: this.API_BASE_URL,
-			url: `${url}/${this.id}`,
-			method: this.httpReqMethod,
-			data: this.objectData,
-			timeout: 3000,
-			withCredentials: true,
-			headers: { Authorization: `Bearer mytoke` },
-		}
-
-		const response = axios.request(config)
-		return response
-	}
-
-	record = (): Promise<AxiosResponse<RecordType[]>> =>
-		this.axiosRequestPrivate('record')
+	record = (accessToken: string | undefined) =>
+		this.axiosRequest('record', accessToken)
 
 	signin = (): Promise<AxiosResponse<{ accessToken: string }>> =>
 		this.axiosRequest('signin')
