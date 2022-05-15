@@ -1,13 +1,6 @@
+import { navItemList, devItemList } from './NavigationList'
 // ICONS
-import Dashboard from '@/components/Icons/Dashboard'
-import Database from '@/components/Icons/Database'
-import Document from '@/components/Icons/Document'
 import Logo from '@/components/Icons/Logo'
-import Settings from '@/components/Icons/Settings'
-import Signin from '@/components/Icons/Signin'
-import User from '@/components/Icons/User'
-import Users from '@/components/Icons/Users'
-import { RECORD_DETAILS, RECORD_FORM, RECORD_LIST } from '@/constants/routes'
 // LIBRARIES
 import { nanoid } from 'nanoid/non-secure'
 import { Link, useLocation } from 'react-router-dom'
@@ -71,49 +64,3 @@ const Sidebar = () => {
 }
 
 export default Sidebar
-
-const navItemList = [
-	{
-		to: '/dashboard',
-		title: 'Dashboard',
-		icon: <Dashboard />,
-	},
-	{
-		to: '/account',
-		title: 'Account',
-		icon: <User />,
-	},
-	{
-		to: RECORD_FORM,
-		title: 'Record Form',
-		icon: <Document />,
-	},
-	{
-		to: RECORD_LIST,
-		title: 'Record List',
-		icon: <Users />,
-	},
-	{
-		to: RECORD_DETAILS,
-		title: 'Record Details',
-		icon: <Database />,
-	},
-	{
-		to: '/settings',
-		title: 'Settings',
-		icon: <Settings />,
-	},
-	{
-		to: 'signin',
-		title: 'Sign-in',
-		icon: <Signin />,
-	},
-]
-
-const devItemList = [
-	{
-		to: '/components',
-		title: 'Components',
-		icon: <Settings />,
-	},
-]

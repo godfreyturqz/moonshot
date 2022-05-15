@@ -13,6 +13,7 @@ import Details from '@/pages/RecordDetails/RecordDetails'
 import PageNotFound from '@/pages/PageNotFound/PageNotFound'
 import RecordList from '@/pages/RecordList/RecordList'
 import Signin from '@/pages/SignIn/SignIn'
+import { SIGN_IN } from './constants/routes'
 
 const App: React.FC = () => {
 	return (
@@ -21,7 +22,7 @@ const App: React.FC = () => {
 				<Route path="/" element={<MainLayout />}>
 					{/* PUBLIC ROUTE */}
 					<Route path="components" element={<Components />} />
-					<Route path="signin" element={<Signin />} />
+					<Route path={SIGN_IN} element={<Signin />} />
 
 					{/* PROTECTED ROUTE */}
 					<Route element={<PersistLogin />}>

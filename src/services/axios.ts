@@ -43,4 +43,6 @@ export class APIService {
 
 	refreshToken = (): Promise<AxiosResponse<{ accessToken: string }>> =>
 		this.axiosRequest('refresh')
+
+	signout = () => this.axiosRequest('signout')
 }
