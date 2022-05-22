@@ -13,9 +13,11 @@ import useRecordService from '@/services/useRecordService'
 // TYPES
 import { RecordType } from '@/services/record.types'
 
-type TableListType = RecordType & {
+type TableRowType = RecordType & {
 	isSelected: boolean
 }
+
+type AKeys = keyof RecordType
 
 const RecordList: React.FC = () => {
 	const { getRecords } = useRecordService()
@@ -25,30 +27,10 @@ const RecordList: React.FC = () => {
 		isError,
 		error,
 	} = useQuery('RECORDS', getRecords)
-	const [tableList, setTableList] = useState<TableListType[]>([])
-
-	const [uid, setUid] = useState('')
-
-	// const { data: oneRecord } = useQuery<DataType>(['RECORDS', uid], () =>
-	// 	getOneRecord(uid)
-	// )
+	const [tableList, setTableList] = useState<TableRowType[]>([])
+	const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC'>('ASC')
 
 	const [open, setOpen] = useState(false)
-	// const [oneRecord, setOneRecord] = useState<DataType>()
-
-	const handleEditRecordForm = async (id: string) => {
-		setUid(id)
-		// const { data } = useQuery<DataType>(['RECORDS', uid], () =>
-		// getOneRecord(uid)
-		// )
-		// console.log(data)
-		// const oneRecord = await getOneRecord(uid)
-		// setOneRecord((prev) => ({
-		// 	...prev,
-		// 	...data,
-		// }))
-		// one && setOpen(true)
-	}
 
 	const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked
@@ -76,12 +58,32 @@ const RecordList: React.FC = () => {
 		)
 	}
 
+	const handleSort = (
+		dataList: TableRowType[],
+		sortKey: keyof TableRowType
+	) => {
+		// Initially sort the data
+		const sortedData = dataList.sort((a, b) => {
+			return a[sortKey] > b[sortKey] ? 1 : -1
+		})
+
+		//
+		if (sortOrder === 'ASC') {
+			setSortOrder('DESC')
+			setTableList(() => [...sortedData])
+		} else {
+			setSortOrder('ASC')
+			const reversedData = sortedData.reverse()
+			setTableList(() => [...reversedData])
+		}
+	}
+
 	useEffect(() => {
 		const newRecords = recordList?.map((prev) => ({
 			...prev,
 			isSelected: false,
 		}))
-		newRecords && setTableList((prev) => [...prev, ...newRecords])
+		newRecords && setTableList(() => [...newRecords])
 	}, [recordList])
 
 	return (
@@ -103,19 +105,34 @@ const RecordList: React.FC = () => {
 								</label>
 							</div>
 						</th>
-						<th scope="col" className="px-6 py-3">
+						<th
+							className="px-6 py-3"
+							onClick={() => handleSort(tableList, 'firstName')}
+						>
 							Name
 						</th>
-						<th scope="col" className="px-6 py-3">
+						<th
+							className="px-6 py-3"
+							onClick={() => handleSort(tableList, 'email')}
+						>
 							Email
 						</th>
-						<th scope="col" className="px-6 py-3">
+						<th
+							className="px-6 py-3"
+							onClick={() => handleSort(tableList, 'contact')}
+						>
 							Contact
 						</th>
-						<th scope="col" className="px-6 py-3">
+						<th
+							className="px-6 py-3"
+							onClick={() => handleSort(tableList, 'gender')}
+						>
 							Gender
 						</th>
-						<th scope="col" className="px-6 py-3">
+						<th
+							className="px-6 py-3"
+							onClick={() => handleSort(tableList, 'houseNumber')}
+						>
 							Address
 						</th>
 					</tr>
@@ -128,7 +145,7 @@ const RecordList: React.FC = () => {
 							<tr
 								key={item.uid}
 								className="bg-white border-b hover:bg-gray-200 cursor-pointer"
-								onClick={() => handleEditRecordForm(item.uid)}
+								// onClick={() => handleEditRecordForm(item.uid)}
 							>
 								<td className="w-4 p-4">
 									<div className="flex items-center">
