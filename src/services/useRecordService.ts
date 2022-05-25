@@ -1,7 +1,7 @@
 import { APIService } from '@/services/axios'
 import { Method } from 'axios'
 import { useAuthContext } from '@/contexts/AuthContextProvider'
-import { RecordType } from './record.types'
+import { RecordType } from '../types/record.types'
 
 const useRecordService = () => {
 	const { auth } = useAuthContext()

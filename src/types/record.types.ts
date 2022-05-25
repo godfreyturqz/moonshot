@@ -1,4 +1,4 @@
-export type FormValues = {
+export type RecordFormValues = {
 	firstName: string
 	lastName: string
 	email: string
@@ -11,10 +11,7 @@ export type FormValues = {
 	province: string
 }
 
-export interface RecordData extends FormValues {
+export type RecordData = RecordFormValues & {
 	uid: string
-}
-
-export interface RecordList extends RecordData {
-	select: boolean
+	createdAt: string
 }

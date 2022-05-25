@@ -6,10 +6,10 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 // SERVICES
 import useRecordService from '@/services/useRecordService'
 // TYPES
-import { FormValues, RecordData } from './types'
+import { RecordData, RecordFormValues } from '@/types/record.types'
 
 type EditRecordFormType = {
-	recordData: RecordData | undefined
+	recordData?: RecordData
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -19,9 +19,9 @@ const EditRecordForm: React.FC<EditRecordFormType> = ({
 }) => {
 	const { updateOneRecord } = useRecordService()
 	const { register, control, reset, handleSubmit, formState } =
-		useForm<FormValues>({})
+		useForm<RecordFormValues>({})
 
-	const onSubmit: SubmitHandler<FormValues> = async (formData) => {
+	const onSubmit: SubmitHandler<RecordFormValues> = async (formData) => {
 		try {
 			const data = await updateOneRecord(recordData?.uid, { ...formData })
 			console.log(data)

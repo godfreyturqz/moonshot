@@ -9,12 +9,12 @@ import {
 	FormState,
 } from 'react-hook-form'
 // TYPES
-import { FormValues, RecordData } from './types'
+import { RecordFormValues, RecordData } from '@/types/record.types'
 
 type FormInputGroup = {
-	register: UseFormRegister<FormValues>
-	control: Control<FormValues>
-	formState: FormState<FormValues>
+	register: UseFormRegister<RecordFormValues>
+	control: Control<RecordFormValues>
+	formState: FormState<RecordFormValues>
 	recordData?: RecordData | undefined
 }
 
@@ -33,7 +33,7 @@ const FormInputGroup: React.FC<FormInputGroup> = ({
 						<Controller
 							name="firstName"
 							control={control}
-							defaultValue={recordData ? recordData.firstName : ''}
+							defaultValue={recordData?.firstName || ''}
 							rules={{ required: true }}
 							render={({ field }) => <Input {...field} />}
 						/>

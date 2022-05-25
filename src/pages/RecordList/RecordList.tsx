@@ -11,26 +11,31 @@ import SkeletonLoader from './sub-components/SkeletonLoader'
 // SERVICES
 import useRecordService from '@/services/useRecordService'
 // TYPES
-import { RecordType } from '@/services/record.types'
+import { RecordData } from '@/types/record.types'
+// UTILS
+import useSort from '@/utils/useSort'
 
-type TableRowType = RecordType & {
+type RecordTableRow = RecordData & {
 	isSelected: boolean
 }
 
-type AKeys = keyof RecordType
-
 const RecordList: React.FC = () => {
+	// for listing the records
 	const { getRecords } = useRecordService()
-	const {
-		data: recordList,
-		isLoading,
-		isError,
-		error,
-	} = useQuery('RECORDS', getRecords)
-	const [tableList, setTableList] = useState<TableRowType[]>([])
+	const { data: recordList, isLoading } = useQuery('RECORDS', getRecords)
+	const [tableList, setTableList] = useState<RecordTableRow[]>([])
+	// for sorting
+	const { handleSort } = useSort()
 	const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC'>('ASC')
-
+	// for edit modal form
 	const [open, setOpen] = useState(false)
+	const [recordData, setRecordData] = useState<RecordTableRow>()
+
+	const handleEditRecordModalForm = (uid: string) => {
+		setOpen(true)
+		const data = tableList.find((item) => item.uid === uid)
+		setRecordData(data)
+	}
 
 	const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const checked = e.target.checked
@@ -58,32 +63,33 @@ const RecordList: React.FC = () => {
 		)
 	}
 
-	const handleSort = (
-		dataList: TableRowType[],
-		sortKey: keyof TableRowType
-	) => {
-		// Initially sort the data
-		const sortedData = dataList.sort((a, b) => {
-			return a[sortKey] > b[sortKey] ? 1 : -1
-		})
+	// const handleSort = (
+	// 	dataList: RecordTableRow[],
+	// 	sortKey: keyof RecordTableRow
+	// ) => {
+	// 	// Initially sort the data
+	// 	const sortedData = dataList.sort((a, b) => {
+	// 		return a[sortKey] > b[sortKey] ? 1 : -1
+	// 	})
 
-		//
-		if (sortOrder === 'ASC') {
-			setSortOrder('DESC')
-			setTableList(() => [...sortedData])
-		} else {
-			setSortOrder('ASC')
-			const reversedData = sortedData.reverse()
-			setTableList(() => [...reversedData])
-		}
-	}
+	// 	if (sortOrder === 'ASC') {
+	// 		setSortOrder('DESC')
+	// 		setTableList(() => [...sortedData])
+	// 	} else {
+	// 		setSortOrder('ASC')
+	// 		const reversedData = sortedData.reverse()
+	// 		setTableList(() => [...reversedData])
+	// 	}
+	// }
 
 	useEffect(() => {
+		// add 'isSelected' property for checkbox logics
 		const newRecords = recordList?.map((prev) => ({
 			...prev,
 			isSelected: false,
 		}))
 		newRecords && setTableList(() => [...newRecords])
+		console.log('log@RecordList.tsx', newRecords)
 	}, [recordList])
 
 	return (
@@ -107,7 +113,7 @@ const RecordList: React.FC = () => {
 						</th>
 						<th
 							className="px-6 py-3"
-							onClick={() => handleSort(tableList, 'firstName')}
+							onClick={() => setTableList(handleSort(tableList, 'firstName'))}
 						>
 							Name
 						</th>
@@ -135,6 +141,12 @@ const RecordList: React.FC = () => {
 						>
 							Address
 						</th>
+						<th
+							className="px-6 py-3"
+							onClick={() => handleSort(tableList, 'createdAt')}
+						>
+							Created At
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -145,7 +157,7 @@ const RecordList: React.FC = () => {
 							<tr
 								key={item.uid}
 								className="bg-white border-b hover:bg-gray-200 cursor-pointer"
-								// onClick={() => handleEditRecordForm(item.uid)}
+								onClick={() => handleEditRecordModalForm(item.uid)}
 							>
 								<td className="w-4 p-4">
 									<div className="flex items-center">
@@ -174,6 +186,10 @@ const RecordList: React.FC = () => {
 									{item.houseNumber} {item.street}, {item.barangay}, {item.city}
 									, {item.province}
 								</td>
+								<td className="px-6 py-4">
+									{new Date(item.createdAt).toLocaleDateString()} -{' '}
+									{new Date(item.createdAt).toLocaleTimeString()}
+								</td>
 							</tr>
 						))
 					)}
@@ -181,7 +197,7 @@ const RecordList: React.FC = () => {
 			</table>
 			{!isLoading && tableList?.length === 0 && <DataNotFound />}
 			<Modal open={open} setOpen={setOpen}>
-				{/* <EditRecordForm recordData={oneRecord} setOpen={setOpen} /> */}
+				<EditRecordForm setOpen={setOpen} recordData={recordData} />
 			</Modal>
 		</div>
 	)
