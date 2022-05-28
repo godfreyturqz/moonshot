@@ -10,7 +10,7 @@ export const AuthRoute = () => {
 
 	console.log('log@AuthRoute.ts', auth)
 	console.log('log@AuthRoute.ts', location)
-	if (auth) return <Outlet />
+	if (auth?.accessToken) return <Outlet />
 
 	return <Navigate to={SIGN_IN} state={{ from: location }} replace />
 }

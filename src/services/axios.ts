@@ -1,7 +1,13 @@
 import axios, { Method, AxiosResponse } from 'axios'
 
-// for dev
+// CONFIG
 const isLocalServer = true
+const APIRoutes = {
+	Record: 'record',
+	SignIn: 'signin',
+	SignOut: 'signout',
+	RefreshToken: 'refresh',
+}
 
 export class APIService {
 	private API_BASE_URL: string = isLocalServer
@@ -35,14 +41,14 @@ export class APIService {
 		return response
 	}
 
-	record = (accessToken: string | undefined) =>
-		this.axiosRequest('record', accessToken)
+	record = (accessToken: string) =>
+		this.axiosRequest(APIRoutes.Record, accessToken)
 
 	signin = (): Promise<AxiosResponse<{ accessToken: string }>> =>
-		this.axiosRequest('signin')
+		this.axiosRequest(APIRoutes.SignIn)
 
 	refreshToken = (): Promise<AxiosResponse<{ accessToken: string }>> =>
-		this.axiosRequest('refresh')
+		this.axiosRequest(APIRoutes.RefreshToken)
 
-	signout = () => this.axiosRequest('signout')
+	signout = () => this.axiosRequest(APIRoutes.SignOut)
 }

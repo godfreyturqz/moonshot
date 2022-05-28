@@ -4,7 +4,7 @@ import BellIcon from '@/components/Icons/Bell'
 import MenuIcon from '@/components/Icons/Menu'
 import XIcon from '@/components/Icons/X'
 import { useAuthContext } from '@/contexts/AuthContextProvider'
-import useSignOut from '@/utils/useSignout'
+import useSignOut from '@/utils/useSignOut'
 
 const navigation = [
 	{ name: 'Dashboard', href: '#', current: true },

@@ -1,7 +1,7 @@
 import { APIService } from '@/services/axios'
 import { Method } from 'axios'
 import { useAuthContext } from '@/contexts/AuthContextProvider'
-import { RecordType } from '../types/record.types'
+import { RecordData } from '../types/record.types'
 
 const useRecordService = () => {
 	const { auth } = useAuthContext()
@@ -34,7 +34,7 @@ const useRecordService = () => {
 		return fetchFunction('GET', id)
 	}
 
-	const getRecords: () => Promise<RecordType[]> = async () => {
+	const getRecords: () => Promise<RecordData[]> = async () => {
 		return fetchFunction('GET')
 	}
 
