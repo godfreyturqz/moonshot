@@ -16,6 +16,7 @@ import {
 	RECORD_LIST,
 	SETTINGS,
 	SIGN_IN,
+	SIGN_UP,
 } from '@/constants/routes'
 
 export const navItemList = [
@@ -24,11 +25,12 @@ export const navItemList = [
 		title: 'Dashboard',
 		icon: <Dashboard />,
 	},
-	{
-		to: ACCOUNT,
-		title: 'Account',
-		icon: <User />,
-	},
+	// temporarily removed as it has no use at the moment
+	// {
+	// 	to: ACCOUNT,
+	// 	title: 'Account',
+	// 	icon: <User />,
+	// },
 	{
 		to: RECORD_FORM,
 		title: 'Record Form',
@@ -44,14 +46,20 @@ export const navItemList = [
 		title: 'Record Details',
 		icon: <Database />,
 	},
-	{
-		to: SETTINGS,
-		title: 'Settings',
-		icon: <Cog />,
-	},
+	// temporarily removed as it has no use at the moment
+	// {
+	// 	to: SETTINGS,
+	// 	title: 'Settings',
+	// 	icon: <Cog />,
+	// },
 	{
 		to: SIGN_IN,
 		title: 'Sign-in',
+		icon: <Signin />,
+	},
+	{
+		to: SIGN_UP,
+		title: 'Sign-up',
 		icon: <Signin />,
 	},
 ]

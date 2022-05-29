@@ -74,7 +74,7 @@ const RecordList: React.FC = () => {
 	}, [recordList])
 
 	return (
-		<div className="relative overflow-auto shadow-md sm:rounded-lg max-w-7xl mx-auto h-full bg-white">
+		<div className="relative overflow-auto shadow-md sm:rounded-lg max-w-7xl mx-auto h-full bg-white select-none">
 			<div>
 				<SearchField />
 			</div>
@@ -142,7 +142,7 @@ const RecordList: React.FC = () => {
 									<div className="flex items-center">
 										<input
 											type="checkbox"
-											className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+											className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
 											checked={item.isSelected}
 											onChange={() => handleCheckbox(item.uid)}
 										/>

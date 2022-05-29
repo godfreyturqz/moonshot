@@ -9,7 +9,7 @@ const Sidebar = () => {
 	const location = useLocation()
 
 	return (
-		<div className="flex flex-col h-full overflow-auto bg-gray-800 p-3 min-w-[18rem] shadow-2xl shadow-gray-900 z-10">
+		<div className="flex flex-col h-full overflow-auto bg-gray-800 p-3 min-w-[18rem] shadow-2xl shadow-gray-900 z-10 select-none">
 			<div className="p-2">
 				<Logo />
 			</div>
