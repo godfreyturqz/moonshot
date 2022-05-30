@@ -18,6 +18,7 @@ import {
 	SIGN_IN,
 	SIGN_UP,
 } from '@/constants/routes'
+import Pencil from '../Icons/Pencil'
 
 export const navItemList = [
 	{
@@ -60,7 +61,7 @@ export const navItemList = [
 	{
 		to: SIGN_UP,
 		title: 'Sign-up',
-		icon: <Signin />,
+		icon: <Pencil />,
 	},
 ]
 
