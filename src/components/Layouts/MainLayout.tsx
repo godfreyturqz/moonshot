@@ -1,5 +1,5 @@
 // COMPONENTS
-import Navbar from '@/components/Navbar/Navbar'
+import Navbar from '@/components/Navbar'
 import Sidebar from '@/components/Sidebar/Sidebar'
 // LIBRARIES
 import { Outlet } from 'react-router-dom'

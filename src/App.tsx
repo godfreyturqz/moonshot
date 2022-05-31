@@ -19,10 +19,11 @@ const App: React.FC = () => {
 	return (
 		<AuthContextProvider>
 			<Routes>
+				<Route path={SIGN_IN} element={<Signin />} />
+
 				<Route path="/" element={<MainLayout />}>
 					{/* PUBLIC ROUTE */}
 					<Route path="components" element={<Components />} />
-					<Route path={SIGN_IN} element={<Signin />} />
 
 					{/* PROTECTED ROUTE */}
 					<Route element={<PersistLogin />}>
@@ -33,10 +34,10 @@ const App: React.FC = () => {
 							<Route path="record-details" element={<Details />} />
 						</Route>
 					</Route>
-
-					{/* UNKNOWN ROUTE FALLBACK */}
-					<Route path="*" element={<PageNotFound />} />
 				</Route>
+
+				{/* UNKNOWN ROUTE FALLBACK */}
+				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</AuthContextProvider>
 	)

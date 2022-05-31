@@ -6,18 +6,21 @@ import Logo from '@/components/Icons/Logo'
 import { nanoid } from 'nanoid/non-secure'
 import { Link, useLocation } from 'react-router-dom'
 import Menu from '../Icons/Menu'
+// STATE
+import { useNavStore } from '@/utils/useNavStore'
 
 const Sidebar = () => {
 	const location = useLocation()
-	const [open, setOpen] = useState(true)
+	const setOpen = useNavStore((state) => state.setOpen)
+	const open = useNavStore((state) => state.open)
 
 	return (
 		<>
-			{open && (
+			{open === true && (
 				<div className="flex flex-col h-full overflow-auto bg-gray-800 p-3 min-w-[18rem] shadow-2xl shadow-gray-900 z-10 select-none">
 					<div
-						onClick={() => setOpen(false)}
-						className="cursor-pointer hover:bg-gray-700 w-fit rounded-full p-2 text-white float-left ml-auto"
+						onClick={() => setOpen()}
+						className="cursor-pointer hover:bg-gray-700 w-fit rounded-full p-2 text-white ml-auto"
 					>
 						<Menu />
 					</div>
