@@ -16,9 +16,11 @@ import {
 	RECORD_LIST,
 	SETTINGS,
 	SIGN_IN,
+	SIGN_OUT,
 	SIGN_UP,
 } from '@/constants/routes'
 import Pencil from '../Icons/Pencil'
+import Signout from '../Icons/Signout'
 
 export const navItemList = [
 	{
@@ -62,6 +64,11 @@ export const navItemList = [
 		to: SIGN_UP,
 		title: 'Sign-up',
 		icon: <Pencil />,
+	},
+	{
+		to: SIGN_OUT,
+		title: 'Sign-out',
+		icon: <Signout />,
 	},
 ]
 

@@ -8,11 +8,16 @@ import { Link, useLocation } from 'react-router-dom'
 import Menu from '../Icons/Menu'
 // STATE
 import { useNavStore } from '@/utils/useNavStore'
+import useSignOut from '@/utils/useSignOut'
 
 const Sidebar = () => {
+	// for sidebar
 	const location = useLocation()
+	// for open/close of sidebar
 	const setOpen = useNavStore((state) => state.setOpen)
 	const open = useNavStore((state) => state.open)
+	// for signout function
+	const { signOut } = useSignOut()
 
 	return (
 		<>
@@ -40,6 +45,7 @@ const Sidebar = () => {
 										className={`text-white pr-3 ${
 											location.pathname === to && 'text-sky-400'
 										}`}
+										onClick={() => to === '/signout' && signOut()}
 									>
 										{item}
 									</div>

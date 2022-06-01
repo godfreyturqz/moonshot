@@ -13,7 +13,7 @@ const useSignOut = () => {
 
 	const signOut = async () => {
 		try {
-			setAuth(null)
+			setAuth({ accessToken: '' })
 			await new APIService('GET').signout()
 			navigate(SIGN_IN)
 		} catch (error) {
