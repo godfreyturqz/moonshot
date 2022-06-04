@@ -4,7 +4,7 @@ import FormInputGroup from './FormInputGroup'
 // LIBRARIES
 import { SubmitHandler, useForm } from 'react-hook-form'
 // SERVICES
-import useRecordService from '@/services/useRecordService'
+import { useRecordService } from '@/services/useRecordService'
 // TYPES
 import { RecordData, RecordFormValues } from '@/types/record.types'
 

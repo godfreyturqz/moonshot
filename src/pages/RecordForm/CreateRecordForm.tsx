@@ -5,16 +5,16 @@ import FormInputGroup from './FormInputGroup'
 import { nanoid } from 'nanoid'
 import { useForm, SubmitHandler } from 'react-hook-form'
 // SERVICES
-import useRecordService from '@/services/useRecordService'
+import { useRecordService } from '@/services/useRecordService'
 // TYPES
-import { FormValues } from './types'
+import { RecordFormValues } from '@/types/record.types'
 
 const CreateRecordForm = () => {
 	const { createRecord } = useRecordService()
 	const { register, control, reset, handleSubmit, formState } =
-		useForm<FormValues>({})
+		useForm<RecordFormValues>({})
 
-	const onSubmit: SubmitHandler<FormValues> = async (formData) => {
+	const onSubmit: SubmitHandler<RecordFormValues> = async (formData) => {
 		try {
 			const data = await createRecord({ uid: nanoid(), ...formData })
 			;(await data) && reset()

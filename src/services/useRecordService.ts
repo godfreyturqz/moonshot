@@ -3,7 +3,7 @@ import { Method } from 'axios'
 import { useAuthContext } from '@/contexts/AuthContextProvider'
 import { RecordData } from '../types/record.types'
 
-const useRecordService = () => {
+export const useRecordService = () => {
 	const { auth } = useAuthContext()
 
 	const fetchFunction = async (
@@ -50,5 +50,3 @@ const useRecordService = () => {
 		updateOneRecord,
 	}
 }
-
-export default useRecordService

@@ -9,13 +9,14 @@ import DataNotFound from './sub-components/DataNotFound'
 import SearchField from './sub-components/SearchField'
 import SkeletonLoader from './sub-components/SkeletonLoader'
 // SERVICES
-import useRecordService from '@/services/useRecordService'
+// import useRecordService from '@/services/useRecordService'
 // TYPES
 import { RecordData } from '@/types/record.types'
 // UTILS
 import useSort from '@/utils/useSort'
 import Pagination from './sub-components/Pagination'
 import Trash from '@/components/Icons/Trash'
+import { useRecordQuery } from '@/utils/query/useRecordQuery'
 
 type RecordTableList = RecordData & {
 	isSelected: boolean
@@ -23,8 +24,9 @@ type RecordTableList = RecordData & {
 
 const RecordList: React.FC = () => {
 	// for listing the records
-	const { getRecords, deleteOneRecord } = useRecordService()
-	const { data: recordList, isLoading } = useQuery('RECORDS', getRecords)
+	// const { getRecords, deleteOneRecord } = useRecordService()
+	// const { data: recordList, isLoading } = useQuery('RECORDS', getRecords)
+	const { data: recordList, isLoading, handleDelete } = useRecordQuery()
 	const [tableList, setTableList] = useState<RecordTableList[]>([])
 	// for sorting
 	const { handleSort } = useSort()
@@ -32,10 +34,10 @@ const RecordList: React.FC = () => {
 	const [open, setOpen] = useState(false)
 	const [recordData, setRecordData] = useState<RecordTableList>()
 
-	const handleDelete = (id: string) => {
-		deleteOneRecord(id)
-		setTableList((prev) => prev.filter((item) => item.uid !== id))
-	}
+	// const handleDelete = (id: string) => {
+	// 	deleteOneRecord(id)
+	// 	setTableList((prev) => prev.filter((item) => item.uid !== id))
+	// }
 	const handleEditRecordModalForm = (uid: string) => {
 		setOpen(true)
 		const data = tableList.find((item) => item.uid === uid)
@@ -170,7 +172,7 @@ const RecordList: React.FC = () => {
 								</td>
 								<td className="px-6 py-4 absolute right-0">
 									<div
-										onClick={() => handleDelete(item.uid)}
+										onClick={() => handleDelete.mutate(item.uid)}
 										className="p-1 rounded-full hover:bg-gray-700 active:bg-rose-400 hover:text-white active:text-gray-900"
 									>
 										<Trash />
