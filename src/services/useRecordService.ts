@@ -1,7 +1,7 @@
 import { APIService } from '@/services/axios'
 import { Method } from 'axios'
 import { useAuthContext } from '@/contexts/AuthContextProvider'
-import { RecordData } from '../types/record.types'
+import { RecordData, RecordFormValues } from '../types/record.types'
 
 export const useRecordService = () => {
 	const { auth } = useAuthContext()
@@ -38,7 +38,7 @@ export const useRecordService = () => {
 		return fetchFunction('GET')
 	}
 
-	const updateOneRecord = (id: string | undefined, payload: object) => {
+	const updateOneRecord = (id: string, payload: RecordFormValues) => {
 		return fetchFunction('PUT', id, payload)
 	}
 

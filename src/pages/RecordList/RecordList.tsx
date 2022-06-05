@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-// LIBRARIES
-import { useQuery } from 'react-query'
 // COMPONENTS
 import EditRecordForm from '@/pages/RecordForm/EditRecordForm'
 import Modal from '@/components/Modal/Modal'
@@ -8,8 +6,6 @@ import Modal from '@/components/Modal/Modal'
 import DataNotFound from './sub-components/DataNotFound'
 import SearchField from './sub-components/SearchField'
 import SkeletonLoader from './sub-components/SkeletonLoader'
-// SERVICES
-// import useRecordService from '@/services/useRecordService'
 // TYPES
 import { RecordData } from '@/types/record.types'
 // UTILS
@@ -17,31 +13,27 @@ import useSort from '@/utils/useSort'
 import Pagination from './sub-components/Pagination'
 import Trash from '@/components/Icons/Trash'
 import { useRecordQuery } from '@/utils/query/useRecordQuery'
+import Pencil from '@/components/Icons/Pencil'
 
-type RecordTableList = RecordData & {
+type RecordTableRow = RecordData & {
 	isSelected: boolean
 }
 
 const RecordList: React.FC = () => {
-	// for listing the records
-	// const { getRecords, deleteOneRecord } = useRecordService()
-	// const { data: recordList, isLoading } = useQuery('RECORDS', getRecords)
 	const { data: recordList, isLoading, handleDelete } = useRecordQuery()
-	const [tableList, setTableList] = useState<RecordTableList[]>([])
+	const [tableList, setTableList] = useState<RecordTableRow[]>(
+		[] as RecordTableRow[]
+	)
 	// for sorting
 	const { handleSort } = useSort()
 	// for edit modal form
 	const [open, setOpen] = useState(false)
-	const [recordData, setRecordData] = useState<RecordTableList>()
+	const [recordData, setRecordData] = useState<RecordData>({} as RecordData)
 
-	// const handleDelete = (id: string) => {
-	// 	deleteOneRecord(id)
-	// 	setTableList((prev) => prev.filter((item) => item.uid !== id))
-	// }
 	const handleEditRecordModalForm = (uid: string) => {
 		setOpen(true)
-		const data = tableList.find((item) => item.uid === uid)
-		setRecordData(data)
+		const data = tableList?.find((item) => item.uid === uid)
+		data && setRecordData(data)
 	}
 
 	const handleAllCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,8 +135,9 @@ const RecordList: React.FC = () => {
 						tableList?.map((item) => (
 							<tr
 								key={item.uid}
-								className="bg-white border-b hover:bg-gray-200 cursor-pointer relative"
-								// onClick={() => handleEditRecordModalForm(item.uid)}
+								className={`bg-white border-b hover:bg-gray-200 transition ease-in-out cursor-pointer relative group ${
+									item.isSelected && 'bg-gray-200'
+								}`}
 							>
 								<td className="w-4 p-4">
 									<div className="flex items-center">
@@ -170,10 +163,18 @@ const RecordList: React.FC = () => {
 									{new Date(item.createdAt).toLocaleDateString()} -{' '}
 									{new Date(item.createdAt).toLocaleTimeString()}
 								</td>
-								<td className="px-6 py-4 absolute right-0">
+								<td
+									className={`px-6 py-4 absolute right-0 flex invisible group-hover:visible`}
+								>
+									<div
+										onClick={() => handleEditRecordModalForm(item.uid)}
+										className="p-1 rounded-full hover:bg-gray-700 transition ease-in-out active:bg-sky-400 hover:text-white active:text-gray-900"
+									>
+										<Pencil />
+									</div>
 									<div
 										onClick={() => handleDelete.mutate(item.uid)}
-										className="p-1 rounded-full hover:bg-gray-700 active:bg-rose-400 hover:text-white active:text-gray-900"
+										className="p-1 rounded-full hover:bg-gray-700 transition ease-in-out active:bg-sky-400 hover:text-white active:text-gray-900"
 									>
 										<Trash />
 									</div>

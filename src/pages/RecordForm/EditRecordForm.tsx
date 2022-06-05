@@ -4,12 +4,13 @@ import FormInputGroup from './FormInputGroup'
 // LIBRARIES
 import { SubmitHandler, useForm } from 'react-hook-form'
 // SERVICES
-import { useRecordService } from '@/services/useRecordService'
+// import { useRecordService } from '@/services/useRecordService'
 // TYPES
 import { RecordData, RecordFormValues } from '@/types/record.types'
+import { useRecordQuery } from '@/utils/query/useRecordQuery'
 
 type EditRecordFormType = {
-	recordData?: RecordData
+	recordData: RecordData
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -17,14 +18,16 @@ const EditRecordForm: React.FC<EditRecordFormType> = ({
 	recordData,
 	setOpen,
 }) => {
-	const { updateOneRecord } = useRecordService()
+	// const { updateOneRecord } = useRecordService()
+	const { handleUpdate } = useRecordQuery()
 	const { register, control, reset, handleSubmit, formState } =
 		useForm<RecordFormValues>({})
 
 	const onSubmit: SubmitHandler<RecordFormValues> = async (formData) => {
 		try {
-			const data = await updateOneRecord(recordData?.uid, { ...formData })
-			console.log(data)
+			// const data = await updateOneRecord(recordData?.uid, { ...formData })
+			handleUpdate.mutate({ id: recordData?.uid, payload: formData })
+			// console.log(data)
 			setOpen(false)
 		} catch (error) {
 			console.log(error)
