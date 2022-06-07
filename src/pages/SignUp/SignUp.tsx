@@ -58,7 +58,7 @@ const SignUp = () => {
 						Or{' '}
 						<Link to={SIGN_IN}>
 							<span className="font-medium text-indigo-600 hover:text-indigo-500">
-								Sign in instead
+								sign in instead
 							</span>
 						</Link>
 					</p>

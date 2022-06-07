@@ -9,6 +9,7 @@ import Menu from '../Icons/Menu'
 // STATE
 import { useNavStore } from '@/utils/useNavStore'
 import useSignOut from '@/utils/useSignOut'
+import { SIGN_OUT } from '@/constants/routes'
 
 const Sidebar = () => {
 	// for sidebar
@@ -23,36 +24,45 @@ const Sidebar = () => {
 		<>
 			{open === true && (
 				<div className="flex flex-col h-full overflow-auto bg-gray-800 p-3 min-w-[18rem] shadow-2xl shadow-gray-900 z-10 select-none">
+					{/* Menu button */}
 					<div
 						onClick={() => setOpen()}
 						className="cursor-pointer hover:bg-gray-700 w-fit rounded-full p-2 text-white ml-auto"
 					>
 						<Menu />
 					</div>
+					{/* Divider */}
 					<div className="py-5">
 						<div className="border-t border-gray-600" />
 					</div>
-					{navItemList.map(({ to, title, icon }) => (
-						<Link to={to} key={title}>
-							<div
-								className={`flex px-4 py-2 m-1 rounded-lg items-center hover:bg-gray-700 transition ${
-									location.pathname === to && 'bg-gray-700'
-								}`}
-							>
-								{[icon, title].map((item) => (
+					{/* Navigation list */}
+					<div className="h-full flex flex-col">
+						{navItemList.map(({ to, title, icon }) => (
+							<div className="last:mt-auto">
+								<Link to={to} key={title}>
 									<div
-										key={nanoid(4)}
-										className={`text-white pr-3 ${
-											location.pathname === to && 'text-sky-400'
+										className={`flex px-4 py-2 m-1 rounded-lg items-center hover:bg-gray-700 transition ${
+											location.pathname === to && 'bg-gray-700'
 										}`}
-										onClick={() => to === '/signout' && signOut()}
 									>
-										{item}
+										{[icon, title].map((item) => (
+											<div
+												key={nanoid(4)}
+												className={`text-white pr-3
+											${location.pathname === to && 'text-sky-400'}
+											
+											`}
+												onClick={() => to === SIGN_OUT && signOut()}
+											>
+												{item}
+											</div>
+										))}
 									</div>
-								))}
+								</Link>
 							</div>
-						</Link>
-					))}
+						))}
+					</div>
+					{/* Divider */}
 					<div className="py-5">
 						<div className="border-t border-gray-600" />
 					</div>

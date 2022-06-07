@@ -55,16 +55,16 @@ export const navItemList = [
 	// 	title: 'Settings',
 	// 	icon: <Cog />,
 	// },
-	{
-		to: SIGN_IN,
-		title: 'Sign-in',
-		icon: <Signin />,
-	},
-	{
-		to: SIGN_UP,
-		title: 'Sign-up',
-		icon: <Pencil />,
-	},
+	// {
+	// 	to: SIGN_IN,
+	// 	title: 'Sign-in',
+	// 	icon: <Signin />,
+	// },
+	// {
+	// 	to: SIGN_UP,
+	// 	title: 'Sign-up',
+	// 	icon: <Pencil />,
+	// },
 	{
 		to: SIGN_OUT,
 		title: 'Sign-out',
