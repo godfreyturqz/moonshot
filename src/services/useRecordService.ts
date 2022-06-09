@@ -34,8 +34,9 @@ export const useRecordService = () => {
 		return fetchFunction('GET', id)
 	}
 
-	const getRecords: () => Promise<RecordData[]> = async () => {
-		return fetchFunction('GET')
+	const getRecords = (payload: { page: number; limit: number }) => {
+		console.log('log@useRecordService.ts', payload)
+		return fetchFunction('GET', '', payload)
 	}
 
 	const updateOneRecord = (id: string, payload: RecordFormValues) => {

@@ -20,7 +20,9 @@ type RecordTableRow = RecordData & {
 }
 
 const RecordList: React.FC = () => {
-	const { data: recordList, isLoading, handleDelete } = useRecordQuery()
+	const [page, setPage] = useState(1)
+	const [limit, setLimit] = useState(2)
+	const { data: recordList, isLoading, handleDelete } = useRecordQuery(1, 2)
 	const [tableList, setTableList] = useState<RecordTableRow[]>(
 		[] as RecordTableRow[]
 	)
@@ -64,7 +66,7 @@ const RecordList: React.FC = () => {
 
 	useEffect(() => {
 		// add 'isSelected' property for checkbox logic function
-		const newRecords = recordList?.map((prev) => ({
+		const newRecords = recordList?.map((prev: RecordData) => ({
 			...prev,
 			isSelected: false,
 		}))

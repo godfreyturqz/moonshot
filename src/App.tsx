@@ -4,7 +4,7 @@ import MainLayout from '@/components/Layouts/MainLayout'
 // CONTEXT
 import { AuthContextProvider } from '@/contexts/AuthContextProvider'
 // LIBRARIES
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { AuthRoute } from '@/libraries/AuthRoute'
 import PersistLogin from '@/libraries/PersistLogin'
 // PAGES
@@ -18,26 +18,18 @@ import { SIGN_IN, DASHBOARD, SIGN_UP } from './constants/routes'
 import SignUp from './pages/SignUp/SignUp'
 
 const App: React.FC = () => {
-	const navigate = useNavigate()
-	useEffect(() => {
-		// initially Navigates to dashboard
-		navigate(DASHBOARD)
-	}, [])
-
 	return (
 		<AuthContextProvider>
 			<Routes>
-				<Route path="/">
-					{/* PROTECTED ROUTE */}
+				{/* PROTECTED ROUTE */}
+				<Route path="/" element={<AuthRoute />}>
 					<Route element={<PersistLogin />}>
-						<Route element={<AuthRoute />}>
-							<Route element={<MainLayout />}>
-								<Route path="dashboard" element={<div>dashboard page</div>} />
-								<Route path="record-list" element={<RecordList />} />
-								<Route path="record-form" element={<CreateRecordForm />} />
-								<Route path="record-details" element={<Details />} />
-								<Route path="components" element={<Components />} />
-							</Route>
+						<Route element={<MainLayout />}>
+							<Route path="dashboard" element={<div>dashboard page</div>} />
+							<Route path="record-list" element={<RecordList />} />
+							<Route path="record-form" element={<CreateRecordForm />} />
+							<Route path="record-details" element={<Details />} />
+							<Route path="components" element={<Components />} />
 						</Route>
 					</Route>
 				</Route>

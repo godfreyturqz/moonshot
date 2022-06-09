@@ -5,7 +5,7 @@ import { useRecordService } from '@/services/useRecordService'
 // TYPES
 import { RecordData, RecordFormValues } from '@/types/record.types'
 
-export const useRecordQuery = () => {
+export const useRecordQuery = (page: number, limit: number) => {
 	// services
 	const { getRecords, deleteOneRecord, updateOneRecord } = useRecordService()
 
@@ -13,7 +13,9 @@ export const useRecordQuery = () => {
 	const QUERY_KEY = 'RECORDS'
 	const queryClient = useQueryClient()
 
-	const { data, isLoading } = useQuery(QUERY_KEY, getRecords)
+	const { data, isLoading } = useQuery([QUERY_KEY, page, limit], () =>
+		getRecords({ page, limit })
+	)
 
 	const handleDelete = useMutation((id: string) => deleteOneRecord(id), {
 		onMutate: async (id: string) => {

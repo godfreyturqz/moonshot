@@ -15,11 +15,11 @@ export class APIService {
 		: 'https://yoursite.com/api/v1'
 
 	constructor(
-		private httpReqMethod: Method,
+		private httpMethod: Method,
 		private id: string = '',
 		private objectData: object = {}
 	) {
-		this.httpReqMethod = httpReqMethod
+		this.httpMethod = httpMethod
 		this.id = id
 		this.objectData = objectData
 	}
@@ -28,15 +28,17 @@ export class APIService {
 		const config = {
 			baseURL: this.API_BASE_URL,
 			url: `${url}/${this.id}`,
-			method: this.httpReqMethod,
+			method: this.httpMethod,
+			// data: { ...this.objectData, page: 1, limit: 2 },
 			data: this.objectData,
+			// data: { page: '1', limit: '2' },
 			timeout: 3000,
 			withCredentials: true,
 			...(accessToken && {
 				headers: { Authorization: `Bearer ${accessToken}` },
 			}),
 		}
-
+		console.log('log@axios.ts', this.objectData)
 		const response = axios.request(config)
 		return response
 	}
