@@ -8,12 +8,16 @@ export const useRecordService = () => {
 
 	const fetchFunction = async (
 		method: Method,
-		id?: string,
-		payload?: object
+		uid?: string,
+		payload?: object,
+		page?: number,
+		limit?: number
 	) => {
 		try {
-			const { data } = await new APIService(method, id, payload).record(
-				auth?.accessToken
+			const { data } = await new APIService(method, uid, payload).record(
+				auth?.accessToken,
+				page,
+				limit
 			)
 			return data
 		} catch (error) {
@@ -26,21 +30,20 @@ export const useRecordService = () => {
 		return fetchFunction('POST', '', payload)
 	}
 
-	const deleteOneRecord = (id: string) => {
-		return fetchFunction('DELETE', id)
+	const deleteOneRecord = (uid: string) => {
+		return fetchFunction('DELETE', uid)
 	}
 
-	const getOneRecord = (id: string) => {
-		return fetchFunction('GET', id)
+	const getOneRecord = (uid: string) => {
+		return fetchFunction('GET', uid)
 	}
 
-	const getRecords = (payload: { page: number; limit: number }) => {
-		console.log('log@useRecordService.ts', payload)
-		return fetchFunction('GET', '', payload)
+	const getRecords = (page?: number, limit?: number) => {
+		return fetchFunction('GET', '', {}, page, limit)
 	}
 
-	const updateOneRecord = (id: string, payload: RecordFormValues) => {
-		return fetchFunction('PUT', id, payload)
+	const updateOneRecord = (uid: string, payload: RecordFormValues) => {
+		return fetchFunction('PUT', uid, payload)
 	}
 
 	return {

@@ -5,20 +5,32 @@ import { useRecordService } from '@/services/useRecordService'
 // TYPES
 import { RecordData, RecordFormValues } from '@/types/record.types'
 
-export const useRecordQuery = (page: number, limit: number) => {
+type UpdateMutationParamsType = {
+	uid: string
+	payload: RecordFormValues
+}
+
+type UseRecordQueryParamsType = {
+	page: number
+	limit: number
+}
+
+export const useRecordQuery = ({ page, limit }: UseRecordQueryParamsType) => {
 	// services
 	const { getRecords, deleteOneRecord, updateOneRecord } = useRecordService()
 
 	// react query
-	const QUERY_KEY = 'RECORDS'
+	const QUERY_KEY = ['RECORDS', { page, limit }]
 	const queryClient = useQueryClient()
 
-	const { data, isLoading } = useQuery([QUERY_KEY, page, limit], () =>
-		getRecords({ page, limit })
+	const { data, isLoading } = useQuery(
+		QUERY_KEY,
+		() => getRecords(page, limit),
+		{ keepPreviousData: true }
 	)
 
-	const handleDelete = useMutation((id: string) => deleteOneRecord(id), {
-		onMutate: async (id: string) => {
+	const handleDelete = useMutation((uid: string) => deleteOneRecord(uid), {
+		onMutate: async (uid: string) => {
 			await queryClient.cancelQueries(QUERY_KEY)
 
 			const previousState = queryClient.getQueryData<RecordData[]>(QUERY_KEY)
@@ -26,25 +38,22 @@ export const useRecordQuery = (page: number, limit: number) => {
 			if (previousState) {
 				queryClient.setQueryData<RecordData[]>(
 					QUERY_KEY,
-					previousState.filter((item) => item.uid !== id)
+					previousState.filter((item) => item.uid !== uid)
 				)
 			}
 
 			return { previousState }
 		},
+		onSuccess: () => {
+			queryClient.invalidateQueries(QUERY_KEY)
+		},
 	})
 
 	const handleUpdate = useMutation(
-		({ id, payload }: { id: string; payload: RecordFormValues }) =>
-			updateOneRecord(id, payload),
+		({ uid, payload }: UpdateMutationParamsType) =>
+			updateOneRecord(uid, payload),
 		{
-			onMutate: async ({
-				id,
-				payload,
-			}: {
-				id: string
-				payload: RecordFormValues
-			}) => {
+			onMutate: async ({ uid, payload }: UpdateMutationParamsType) => {
 				await queryClient.cancelQueries(QUERY_KEY)
 
 				const previousState = queryClient.getQueryData<RecordData[]>(QUERY_KEY)
@@ -53,12 +62,15 @@ export const useRecordQuery = (page: number, limit: number) => {
 					queryClient.setQueryData<RecordData[]>(
 						QUERY_KEY,
 						previousState.map((item) =>
-							item.uid === id ? { ...item, ...payload } : item
+							item.uid === uid ? { ...item, ...payload } : item
 						)
 					)
 				}
 
 				return { previousState }
+			},
+			onSuccess: () => {
+				queryClient.invalidateQueries(QUERY_KEY)
 			},
 		}
 	)

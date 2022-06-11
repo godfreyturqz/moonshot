@@ -17,34 +17,36 @@ export class APIService {
 	constructor(
 		private httpMethod: Method,
 		private id: string = '',
-		private objectData: object = {}
+		private payload: object = {}
 	) {
-		this.httpMethod = httpMethod
-		this.id = id
-		this.objectData = objectData
+		// this.httpMethod = httpMethod
+		// this.id = id
+		// this.payload = payload
 	}
 
-	private axiosRequest(url: string, accessToken?: string) {
+	private axiosRequest(
+		url: string,
+		accessToken?: string,
+		page?: number,
+		limit?: number
+	) {
 		const config = {
 			baseURL: this.API_BASE_URL,
-			url: `${url}/${this.id}`,
+			url: `${url}/${this.id}?page=${page}&limit=${limit}`,
 			method: this.httpMethod,
-			// data: { ...this.objectData, page: 1, limit: 2 },
-			data: this.objectData,
-			// data: { page: '1', limit: '2' },
+			data: this.payload,
 			timeout: 3000,
 			withCredentials: true,
 			...(accessToken && {
 				headers: { Authorization: `Bearer ${accessToken}` },
 			}),
 		}
-		console.log('log@axios.ts', this.objectData)
 		const response = axios.request(config)
 		return response
 	}
 
-	record = (accessToken: string) =>
-		this.axiosRequest(APIRoutes.Record, accessToken)
+	record = (accessToken: string, page?: number, limit?: number) =>
+		this.axiosRequest(APIRoutes.Record, accessToken, page, limit)
 
 	signin = (): Promise<AxiosResponse<{ accessToken: string }>> =>
 		this.axiosRequest(APIRoutes.SignIn)

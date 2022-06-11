@@ -22,7 +22,11 @@ type RecordTableRow = RecordData & {
 const RecordList: React.FC = () => {
 	const [page, setPage] = useState(1)
 	const [limit, setLimit] = useState(2)
-	const { data: recordList, isLoading, handleDelete } = useRecordQuery(1, 2)
+	const {
+		data: recordList,
+		isLoading,
+		handleDelete,
+	} = useRecordQuery({ page, limit })
 	const [tableList, setTableList] = useState<RecordTableRow[]>(
 		[] as RecordTableRow[]
 	)
@@ -187,11 +191,22 @@ const RecordList: React.FC = () => {
 				</tbody>
 			</table>
 			<div className="absolute bottom-0 w-full">
-				<Pagination tableList={tableList} />
+				<Pagination
+					tableList={tableList}
+					page={page}
+					setPage={setPage}
+					limit={limit}
+					setLimit={setLimit}
+				/>
 			</div>
 			{!isLoading && tableList?.length === 0 && <DataNotFound />}
 			<Modal open={open} setOpen={setOpen}>
-				<EditRecordForm setOpen={setOpen} recordData={recordData} />
+				<EditRecordForm
+					setOpen={setOpen}
+					recordData={recordData}
+					page={page}
+					limit={limit}
+				/>
 			</Modal>
 		</div>
 	)

@@ -1,11 +1,32 @@
+import { Dispatch, SetStateAction } from 'react'
 import ChevronLeft from '@/components/Icons/ChevronLeft'
 import ChevronRight from '@/components/Icons/ChevronRight'
 
 type PaginationType<T> = {
 	tableList: T[]
+	page: number
+	setPage: Dispatch<SetStateAction<number>>
+	limit: number
+	setLimit: Dispatch<SetStateAction<number>>
 }
 
-const Pagination: React.FC<PaginationType<{}>> = ({ tableList }) => {
+const Pagination: React.FC<PaginationType<{}>> = ({
+	tableList,
+	page,
+	setPage,
+	limit,
+	setLimit,
+}) => {
+	const handlePrev = () => {
+		if (page <= 1) return
+		setPage((prev) => prev - 1)
+	}
+
+	const handleNext = () => {
+		if (tableList.length < limit) return
+		setPage((prev) => prev + 1)
+	}
+
 	return (
 		<div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
 			<div className="flex-1 flex justify-between sm:hidden">
@@ -29,12 +50,15 @@ const Pagination: React.FC<PaginationType<{}>> = ({ tableList }) => {
 						className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
 						aria-label="Pagination"
 					>
-						<a className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+						<a
+							onClick={handlePrev}
+							className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-pointer hover:bg-indigo-500 hover:text-white"
+						>
 							<span className="sr-only">Previous</span>
 							<ChevronLeft aria-hidden="true" />
 						</a>
 						{/* Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" */}
-						<a
+						{/* <a
 							aria-current="page"
 							className="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
 						>
@@ -57,8 +81,11 @@ const Pagination: React.FC<PaginationType<{}>> = ({ tableList }) => {
 						</a>
 						<a className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
 							10
-						</a>
-						<a className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+						</a> */}
+						<a
+							onClick={handleNext}
+							className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-pointer hover:bg-indigo-500 hover:text-white transition"
+						>
 							<ChevronRight />
 						</a>
 					</nav>

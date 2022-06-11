@@ -12,22 +12,25 @@ import { useRecordQuery } from '@/utils/query/useRecordQuery'
 type EditRecordFormType = {
 	recordData: RecordData
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>
+	page: number
+	limit: number
 }
 
 const EditRecordForm: React.FC<EditRecordFormType> = ({
 	recordData,
 	setOpen,
+	page,
+	limit,
 }) => {
 	// const { updateOneRecord } = useRecordService()
-	const { handleUpdate } = useRecordQuery()
+	const { handleUpdate } = useRecordQuery({ page, limit })
 	const { register, control, reset, handleSubmit, formState } =
 		useForm<RecordFormValues>({})
 
 	const onSubmit: SubmitHandler<RecordFormValues> = async (formData) => {
 		try {
 			// const data = await updateOneRecord(recordData?.uid, { ...formData })
-			handleUpdate.mutate({ id: recordData?.uid, payload: formData })
-			// console.log(data)
+			handleUpdate.mutate({ uid: recordData?.uid, payload: formData })
 			setOpen(false)
 		} catch (error) {
 			console.log(error)

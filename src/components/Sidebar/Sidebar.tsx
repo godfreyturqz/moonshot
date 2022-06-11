@@ -38,8 +38,8 @@ const Sidebar = () => {
 					{/* Navigation list */}
 					<div className="h-full flex flex-col">
 						{navItemList.map(({ to, title, icon }) => (
-							<div className="last:mt-auto">
-								<Link to={to} key={title}>
+							<div key={title} className="last:mt-auto">
+								<Link to={to}>
 									<div
 										className={`flex px-4 py-2 m-1 rounded-lg items-center hover:bg-gray-700 transition ${
 											location.pathname === to && 'bg-gray-700'

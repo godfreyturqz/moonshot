@@ -22,8 +22,8 @@ const App: React.FC = () => {
 		<AuthContextProvider>
 			<Routes>
 				{/* PROTECTED ROUTE */}
-				<Route path="/" element={<AuthRoute />}>
-					<Route element={<PersistLogin />}>
+				<Route element={<PersistLogin />}>
+					<Route path="/" element={<AuthRoute />}>
 						<Route element={<MainLayout />}>
 							<Route path="dashboard" element={<div>dashboard page</div>} />
 							<Route path="record-list" element={<RecordList />} />
