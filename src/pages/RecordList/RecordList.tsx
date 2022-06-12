@@ -21,7 +21,7 @@ type RecordTableRow = RecordData & {
 
 const RecordList: React.FC = () => {
 	const [page, setPage] = useState(1)
-	const [limit, setLimit] = useState(2)
+	const [limit, setLimit] = useState(10)
 	const {
 		data: recordList,
 		isLoading,
@@ -84,7 +84,7 @@ const RecordList: React.FC = () => {
 				<SearchField />
 			</div>
 			<table className="w-full text-sm text-left text-gray-500">
-				<thead className="text-xs text-gray-200 uppercase bg-gray-700">
+				<thead className="text-xs text-gray-800 uppercase bg-gray-300">
 					<tr>
 						<th scope="col" className="p-4 w-4">
 							<div className="flex items-center">
@@ -149,7 +149,7 @@ const RecordList: React.FC = () => {
 									<div className="flex items-center">
 										<input
 											type="checkbox"
-											className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
+											className="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2 cursor-pointer"
 											checked={item.isSelected}
 											onChange={() => handleCheckbox(item.uid)}
 										/>
@@ -174,13 +174,13 @@ const RecordList: React.FC = () => {
 								>
 									<div
 										onClick={() => handleEditRecordModalForm(item.uid)}
-										className="p-1 rounded-full hover:bg-gray-700 transition ease-in-out active:bg-sky-400 hover:text-white active:text-gray-900"
+										className="p-1 rounded-full hover:bg-gray-400 hover:text-gray-800 transition ease-in-out active:bg-indigo-600 active:text-white"
 									>
 										<Pencil />
 									</div>
 									<div
 										onClick={() => handleDelete.mutate(item.uid)}
-										className="p-1 rounded-full hover:bg-gray-700 transition ease-in-out active:bg-sky-400 hover:text-white active:text-gray-900"
+										className="p-1 rounded-full hover:bg-gray-400 hover:text-gray-800 transition ease-in-out active:bg-indigo-600 active:text-white"
 									>
 										<Trash />
 									</div>

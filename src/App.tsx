@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 // COMPONENTS
 import MainLayout from '@/components/Layouts/MainLayout'
 // CONTEXT
@@ -13,8 +12,19 @@ import CreateRecordForm from '@/pages/RecordForm/CreateRecordForm'
 import Details from '@/pages/RecordDetails/RecordDetails'
 import PageNotFound from '@/pages/PageNotFound/PageNotFound'
 import RecordList from '@/pages/RecordList/RecordList'
-import Signin from '@/pages/SignIn/SignIn'
-import { SIGN_IN, DASHBOARD, SIGN_UP } from './constants/routes'
+import SignIn from '@/pages/SignIn/SignIn'
+import SignOut from '@/pages/SignOut/SignOut'
+import {
+	INDEX,
+	SIGN_IN,
+	DASHBOARD,
+	SIGN_UP,
+	SIGN_OUT,
+	RECORD_LIST,
+	RECORD_FORM,
+	RECORD_DETAILS,
+	COMPONENTS,
+} from './constants/routes'
 import SignUp from './pages/SignUp/SignUp'
 
 const App: React.FC = () => {
@@ -22,23 +32,24 @@ const App: React.FC = () => {
 		<AuthContextProvider>
 			<Routes>
 				{/* PROTECTED ROUTE */}
-				<Route element={<PersistLogin />}>
-					<Route path="/" element={<AuthRoute />}>
+				<Route path={INDEX} element={<PersistLogin />}>
+					<Route element={<AuthRoute />}>
 						<Route element={<MainLayout />}>
-							<Route path="dashboard" element={<div>dashboard page</div>} />
-							<Route path="record-list" element={<RecordList />} />
-							<Route path="record-form" element={<CreateRecordForm />} />
-							<Route path="record-details" element={<Details />} />
-							<Route path="components" element={<Components />} />
+							<Route path={DASHBOARD} element={<div>dashboard page</div>} />
+							<Route path={RECORD_LIST} element={<RecordList />} />
+							<Route path={RECORD_FORM} element={<CreateRecordForm />} />
+							<Route path={RECORD_DETAILS} element={<Details />} />
+							<Route path={COMPONENTS} element={<Components />} />
 						</Route>
 					</Route>
 				</Route>
 
 				{/* PUBLIC ROUTE */}
-				<Route path={SIGN_IN} element={<Signin />} />
+				<Route path={SIGN_IN} element={<SignIn />} />
+				<Route path={SIGN_OUT} element={<SignOut />} />
 				<Route path={SIGN_UP} element={<SignUp />} />
 
-				{/* UNKNOWN ROUTE FALLBACK */}
+				{/* UNKNOWN ROUTE */}
 				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 		</AuthContextProvider>

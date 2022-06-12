@@ -52,7 +52,7 @@ const Pagination: React.FC<PaginationType<{}>> = ({
 					>
 						<a
 							onClick={handlePrev}
-							className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-pointer hover:bg-indigo-500 hover:text-white"
+							className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-pointer hover:bg-indigo-600 hover:text-white transition ease-in-out"
 						>
 							<span className="sr-only">Previous</span>
 							<ChevronLeft aria-hidden="true" />
@@ -84,7 +84,7 @@ const Pagination: React.FC<PaginationType<{}>> = ({
 						</a> */}
 						<a
 							onClick={handleNext}
-							className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-pointer hover:bg-indigo-500 hover:text-white transition"
+							className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-pointer hover:bg-indigo-600 hover:text-white transition ease-in-out"
 						>
 							<ChevronRight />
 						</a>

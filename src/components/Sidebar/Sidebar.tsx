@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { navItemList, devItemList } from './NavigationList'
 // ICONS
 import Logo from '@/components/Icons/Logo'
@@ -8,8 +7,6 @@ import { Link, useLocation } from 'react-router-dom'
 import Menu from '../Icons/Menu'
 // STATE
 import { useNavStore } from '@/utils/useNavStore'
-import useSignOut from '@/utils/useSignOut'
-import { SIGN_OUT } from '@/constants/routes'
 
 const Sidebar = () => {
 	// for sidebar
@@ -17,13 +14,14 @@ const Sidebar = () => {
 	// for open/close of sidebar
 	const setOpen = useNavStore((state) => state.setOpen)
 	const open = useNavStore((state) => state.open)
-	// for signout function
-	const { signOut } = useSignOut()
+	// ${open === true ? 'translate-x-0' : '-translate-x-full'}
 
 	return (
 		<>
 			{open === true && (
-				<div className="flex flex-col h-full overflow-auto bg-gray-800 p-3 min-w-[18rem] shadow-2xl shadow-gray-900 z-10 select-none">
+				<div
+					className={`flex flex-col h-full overflow-auto bg-gray-800 p-3 min-w-[18rem] shadow-2xl shadow-gray-900 select-none transition-transform ease-in-out duration-300 `}
+				>
 					{/* Menu button */}
 					<div
 						onClick={() => setOpen()}
@@ -52,7 +50,6 @@ const Sidebar = () => {
 											${location.pathname === to && 'text-sky-400'}
 											
 											`}
-												onClick={() => to === SIGN_OUT && signOut()}
 											>
 												{item}
 											</div>
