@@ -5,7 +5,7 @@ import { AuthContextProvider } from '@/contexts/AuthContextProvider'
 // LIBRARIES
 import { Routes, Route } from 'react-router-dom'
 import { AuthRoute } from '@/libraries/AuthRoute'
-import PersistLogin from '@/libraries/PersistLogin'
+import { PersistLogin } from '@/libraries/PersistLogin'
 // PAGES
 import Components from '@/pages/Components'
 import CreateRecordForm from '@/pages/RecordForm/CreateRecordForm'
@@ -31,23 +31,24 @@ const App: React.FC = () => {
 	return (
 		<AuthContextProvider>
 			<Routes>
-				{/* PROTECTED ROUTE */}
-				<Route path={INDEX} element={<PersistLogin />}>
-					<Route element={<AuthRoute />}>
-						<Route element={<MainLayout />}>
-							<Route path={DASHBOARD} element={<div>dashboard page</div>} />
-							<Route path={RECORD_LIST} element={<RecordList />} />
-							<Route path={RECORD_FORM} element={<CreateRecordForm />} />
-							<Route path={RECORD_DETAILS} element={<Details />} />
-							<Route path={COMPONENTS} element={<Components />} />
-						</Route>
-					</Route>
-				</Route>
+				<Route path="/" element={<PersistLogin />}>
+					<Route element={<div>123</div>} />
 
-				{/* PUBLIC ROUTE */}
-				<Route path={SIGN_IN} element={<SignIn />} />
-				<Route path={SIGN_OUT} element={<SignOut />} />
-				<Route path={SIGN_UP} element={<SignUp />} />
+					{/* PROTECTED ROUTE */}
+					{/* <Route element={<AuthRoute />}> */}
+					{/* <Route element={<MainLayout />}>
+							<Route path="dashboard" element={<div>dashboard page</div>} />
+							<Route path="record-list" element={<RecordList />} />
+							<Route path="record-form" element={<CreateRecordForm />} />
+							<Route path="record-details" element={<Details />} />
+							<Route path="components" element={<Components />} />
+						</Route> */}
+					{/* </Route> */}
+					{/* PUBLIC ROUTE */}
+					{/* <Route index={false} path={SIGN_IN} element={<SignIn />} />
+					<Route index={false} path={SIGN_OUT} element={<SignOut />} />
+					<Route index={false} path={SIGN_UP} element={<SignUp />} /> */}
+				</Route>
 
 				{/* UNKNOWN ROUTE */}
 				<Route path="*" element={<PageNotFound />} />

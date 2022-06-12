@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom'
 // SERVICES
 import { APIService } from '@/services/axios'
 
-const PersistLogin = () => {
+export const PersistLogin = () => {
 	const { auth, setAuth } = useAuthContext()
 	const [isLoading, setIsLoading] = useState(true)
 
@@ -24,11 +24,11 @@ const PersistLogin = () => {
 				setIsLoading(false)
 			}
 		}
+		console.log('persistLogin')
+		console.log(auth?.accessToken ? 'true' : 'false')
+		auth?.accessToken ? setIsLoading(false) : verifyRefreshToken()
+	}, [auth])
 
-		!auth?.accessToken ? verifyRefreshToken() : setIsLoading(false)
-	}, [])
-
-	return <>{!isLoading && <Outlet />}</>
+	console.log(isLoading === false && 'done loading')
+	return <Outlet />
 }
-
-export default PersistLogin

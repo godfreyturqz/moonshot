@@ -54,6 +54,8 @@ shadow-gray-300
 # Sizing
 
 max-w-7xl
+h-screen, w-screen
+h-full, w-full
 
 # Transform
 
