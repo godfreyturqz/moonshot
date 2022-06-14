@@ -1,11 +1,10 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 // CONSTANTS
-import { SIGN_IN } from '@/constants/routes'
+import { DASHBOARD, SIGN_IN } from '@/constants/routes'
 // CONTEXTS
 import { useAuthContext } from '@/contexts/AuthContextProvider'
 
 export const AuthRoute = () => {
-	console.log('im at authroute')
 	const location = useLocation()
 	const { auth } = useAuthContext()
 
@@ -13,5 +12,5 @@ export const AuthRoute = () => {
 	console.log('log@AuthRoute.ts', location)
 	if (auth?.accessToken) return <Outlet />
 
-	return <Navigate to="signin" state={{ from: location }} replace />
+	return <Navigate to={SIGN_IN} state={{ from: location }} replace />
 }

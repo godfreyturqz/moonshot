@@ -2,13 +2,13 @@ import PaperClip from '@/components/Icons/PaperClip'
 
 const RecordDetails = () => {
 	return (
-		<div className="bg-white shadow sm:rounded-lg">
+		<div className="max-w-7xl mx-auto bg-white shadow sm:rounded-lg">
 			<div className="px-4 py-5 sm:px-6">
 				<h3 className="text-lg leading-6 font-medium text-gray-900">
-					Applicant Information
+					Client Information
 				</h3>
 				<p className="mt-1 max-w-2xl text-sm text-gray-500">
-					Personal details and application.
+					Personal and contact details.
 				</p>
 			</div>
 			<div className="border-t border-gray-200">

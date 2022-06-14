@@ -79,7 +79,7 @@ const RecordList: React.FC = () => {
 	}, [recordList])
 
 	return (
-		<div className="relative overflow-auto shadow-md sm:rounded-lg max-w-7xl mx-auto h-full bg-white select-none">
+		<div className="max-w-7xl mx-auto relative overflow-auto shadow-md sm:rounded-lg h-full bg-white select-none">
 			<div>
 				<SearchField />
 			</div>

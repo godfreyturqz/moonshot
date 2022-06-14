@@ -5,7 +5,7 @@ import App from './App'
 import '@/styles/app.css'
 import '@/styles/tailwind.css'
 // LIBRARIES
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { QueryProvider } from '@/libraries/QueryProvider'
 // DEV
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -14,9 +14,9 @@ ReactDOM.render(
 	<React.StrictMode>
 		<QueryProvider>
 			<ReactQueryDevtools initialIsOpen={false} />
-			<HashRouter>
+			<BrowserRouter>
 				<App />
-			</HashRouter>
+			</BrowserRouter>
 		</QueryProvider>
 	</React.StrictMode>,
 	document.getElementById('root')

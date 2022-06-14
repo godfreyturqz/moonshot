@@ -3,7 +3,6 @@ import Navbar from '@/components/Navbar/Navbar'
 import Sidebar from '@/components/Sidebar/Sidebar'
 // LIBRARIES
 import { Outlet } from 'react-router-dom'
-import { useNavStore } from '@/utils/useNavStore'
 
 const MainLayout = () => {
 	return (

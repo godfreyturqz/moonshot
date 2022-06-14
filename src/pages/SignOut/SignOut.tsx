@@ -1,14 +1,25 @@
 import { useEffect } from 'react'
-import useSignOut from '@/utils/useSignOut'
-import { Link } from 'react-router-dom'
-import { SIGN_IN } from '@/constants/routes'
+// COMPONENTS
 import ArrowRight from '@/components/Icons/ArrowRight'
+// CONSTANTS
+import { SIGN_IN } from '@/constants/routes'
+// LIBRARIES
+import { Link, useNavigate } from 'react-router-dom'
+// UTILITIES
+import useSignOut from '@/utils/useSignOut'
 
 const SignOut = () => {
+	const navigate = useNavigate()
 	const { signOut } = useSignOut()
 
 	useEffect(() => {
-		setTimeout(() => signOut(), 3000)
+		signOut()
+		const navigateToSignIn = setTimeout(() => navigate(SIGN_IN), 3000)
+
+		return () => {
+			// clear timer when the SignOut component unmounts
+			clearTimeout(navigateToSignIn)
+		}
 	}, [])
 
 	return (

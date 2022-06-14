@@ -31,23 +31,21 @@ const App: React.FC = () => {
 	return (
 		<AuthContextProvider>
 			<Routes>
-				<Route path="/" element={<PersistLogin />}>
-					<Route element={<div>123</div>} />
-
+				<Route element={<PersistLogin />}>
 					{/* PROTECTED ROUTE */}
-					{/* <Route element={<AuthRoute />}> */}
-					{/* <Route element={<MainLayout />}>
+					<Route path="/" element={<AuthRoute />}>
+						<Route element={<MainLayout />}>
 							<Route path="dashboard" element={<div>dashboard page</div>} />
 							<Route path="record-list" element={<RecordList />} />
 							<Route path="record-form" element={<CreateRecordForm />} />
 							<Route path="record-details" element={<Details />} />
 							<Route path="components" element={<Components />} />
-						</Route> */}
-					{/* </Route> */}
+						</Route>
+					</Route>
 					{/* PUBLIC ROUTE */}
-					{/* <Route index={false} path={SIGN_IN} element={<SignIn />} />
-					<Route index={false} path={SIGN_OUT} element={<SignOut />} />
-					<Route index={false} path={SIGN_UP} element={<SignUp />} /> */}
+					<Route path={SIGN_IN} element={<SignIn />} />
+					<Route path={SIGN_OUT} element={<SignOut />} />
+					<Route path={SIGN_UP} element={<SignUp />} />
 				</Route>
 
 				{/* UNKNOWN ROUTE */}
