@@ -6,7 +6,7 @@ const Navbar = () => {
 	const open = useNavStore((state) => state.open)
 	return (
 		<div className="bg-white p-3 sticky top-0 shadow shadow-gray-300 select-none">
-			<div className="w-full max-w-7xl m-auto flex flex-row items-center justify-center">
+			<div className="w-full px-5 flex flex-row items-center justify-center">
 				{/* {open === false && ( */}
 				<div
 					onClick={() => setOpen()}

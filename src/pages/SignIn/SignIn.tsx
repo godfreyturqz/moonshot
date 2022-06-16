@@ -7,7 +7,7 @@ import { DASHBOARD, SIGN_UP } from '@/constants/routes'
 import { useAuthContext } from '@/contexts/AuthContextProvider'
 // LIBRARIES
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 // SERVICES
 import { APIService } from '@/services/axios'
 
@@ -19,6 +19,10 @@ type FormValuesType = {
 	password: string
 }
 
+type UseLocationState = {
+	from: string
+}
+
 //---------------
 // MAIN COMPONENT
 //---------------
@@ -26,6 +30,8 @@ const Signin = () => {
 	const { register, handleSubmit, reset } = useForm<FormValuesType>()
 	const { setAuth } = useAuthContext()
 	const navigate = useNavigate()
+	const location = useLocation()
+	const prevLocation = location.state as UseLocationState
 
 	const onSubmit: SubmitHandler<FormValuesType> = async (formData) => {
 		// Logic flow
@@ -43,7 +49,7 @@ const Signin = () => {
 				...prev,
 				accessToken: data.accessToken,
 			}))
-			navigate(DASHBOARD)
+			navigate(prevLocation?.from || DASHBOARD)
 		} catch (error) {
 			console.log(error)
 		}

@@ -12,5 +12,5 @@ export const AuthRoute = () => {
 	console.log('log@AuthRoute.ts', location)
 	if (auth?.accessToken) return <Outlet />
 
-	return <Navigate to={SIGN_IN} state={{ from: location }} replace />
+	return <Navigate to={SIGN_IN} state={{ from: location.pathname }} />
 }

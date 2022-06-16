@@ -40,6 +40,7 @@ top-0
 
 # Shape
 
+border-2 border-rose-500
 border
 border-t, border-b //border top, bottom
 border-gray-300
