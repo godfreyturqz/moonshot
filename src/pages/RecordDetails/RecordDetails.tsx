@@ -1,6 +1,9 @@
+import { useParams } from 'react-router-dom'
 import PaperClip from '@/components/Icons/PaperClip'
 
 const RecordDetails = () => {
+	const { uid } = useParams()
+
 	return (
 		<div className="max-w-7xl mx-auto bg-white shadow sm:rounded-lg">
 			<div className="px-4 py-5 sm:px-6">

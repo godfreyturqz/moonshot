@@ -2,24 +2,31 @@ import { useState, useEffect } from 'react'
 // COMPONENTS
 import EditRecordForm from '@/pages/RecordForm/EditRecordForm'
 import Modal from '@/components/Modal/Modal'
+// CONSTANTS
+import { RECORD_DETAILS } from '@/constants/routes'
+// ICONS
+import Eye from '@/components/Icons/Eye'
+import Pencil from '@/components/Icons/Pencil'
+import Trash from '@/components/Icons/Trash'
+// LIBRARIES
+import { useNavigate } from 'react-router-dom'
 // SUB-COMPONENTS
 import DataNotFound from './sub-components/DataNotFound'
+import Pagination from './sub-components/Pagination'
 import SearchField from './sub-components/SearchField'
 import SkeletonLoader from './sub-components/SkeletonLoader'
 // TYPES
 import { RecordData } from '@/types/record.types'
 // UTILS
 import useSort from '@/utils/useSort'
-import Pagination from './sub-components/Pagination'
-import Trash from '@/components/Icons/Trash'
 import { useRecordQuery } from '@/utils/query/useRecordQuery'
-import Pencil from '@/components/Icons/Pencil'
 
 type RecordTableRow = RecordData & {
 	isSelected: boolean
 }
 
 const RecordList: React.FC = () => {
+	const navigate = useNavigate()
 	const [page, setPage] = useState(1)
 	const [limit, setLimit] = useState(10)
 	const {
@@ -30,8 +37,10 @@ const RecordList: React.FC = () => {
 	const [tableList, setTableList] = useState<RecordTableRow[]>(
 		[] as RecordTableRow[]
 	)
+
 	// for sorting
 	const { handleSort } = useSort()
+
 	// for edit modal form
 	const [open, setOpen] = useState(false)
 	const [recordData, setRecordData] = useState<RecordData>({} as RecordData)
@@ -155,13 +164,13 @@ const RecordList: React.FC = () => {
 										/>
 									</div>
 								</td>
-								<td className="px-6 py-4 text-gray-900">
+								<td className="px-6 py-4 text-gray-900 w-64">
 									{item.firstName} {item.lastName}
 								</td>
 								<td className="px-6 py-4">{item.email}</td>
 								<td className="px-6 py-4">{item.contact}</td>
 								<td className="px-6 py-4">{item.gender}</td>
-								<td className="px-6 py-4">
+								<td className="px-6 py-4 w-min">
 									{item.houseNumber} {item.street}, {item.barangay}, {item.city}
 									, {item.province}
 								</td>
@@ -172,6 +181,12 @@ const RecordList: React.FC = () => {
 								<td
 									className={`px-6 py-4 absolute right-0 flex invisible group-hover:visible`}
 								>
+									<div
+										onClick={() => navigate(`..${RECORD_DETAILS}/${item.uid}`)}
+										className="p-1 rounded-full hover:bg-gray-400 hover:text-gray-800 transition ease-in-out active:bg-indigo-600 active:text-white"
+									>
+										<Eye />
+									</div>
 									<div
 										onClick={() => handleEditRecordModalForm(item.uid)}
 										className="p-1 rounded-full hover:bg-gray-400 hover:text-gray-800 transition ease-in-out active:bg-indigo-600 active:text-white"

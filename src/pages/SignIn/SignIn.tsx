@@ -20,7 +20,7 @@ type FormValuesType = {
 }
 
 type UseLocationState = {
-	from: string
+	pathname: string
 }
 
 //---------------
@@ -31,7 +31,7 @@ const Signin = () => {
 	const { setAuth } = useAuthContext()
 	const navigate = useNavigate()
 	const location = useLocation()
-	const prevLocation = location.state as UseLocationState
+	const locationState = location.state as UseLocationState
 
 	const onSubmit: SubmitHandler<FormValuesType> = async (formData) => {
 		// Logic flow
@@ -49,7 +49,7 @@ const Signin = () => {
 				...prev,
 				accessToken: data.accessToken,
 			}))
-			navigate(prevLocation?.from || DASHBOARD)
+			navigate(locationState?.pathname || DASHBOARD)
 		} catch (error) {
 			console.log(error)
 		}

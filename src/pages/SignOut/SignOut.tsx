@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 // COMPONENTS
 import ArrowRight from '@/components/Icons/ArrowRight'
 // CONSTANTS
@@ -9,12 +9,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import useSignOut from '@/utils/useSignOut'
 
 const SignOut = () => {
+	const [count, setCount] = useState(3)
 	const navigate = useNavigate()
 	const { signOut } = useSignOut()
 
 	useEffect(() => {
 		signOut()
 		const navigateToSignIn = setTimeout(() => navigate(SIGN_IN), 3000)
+		setInterval(() => setCount((prev) => prev - 1), 1000)
 
 		return () => {
 			// clear timer when the SignOut component unmounts
@@ -25,7 +27,7 @@ const SignOut = () => {
 	return (
 		<div className="flex flex-col items-center justify-center h-screen select-none">
 			<h1 className="text-2xl">You have signed out!</h1>
-			<p className="text-sm text-gray-500">Redirecting in 3 seconds</p>
+			<p className="text-sm text-gray-500">Redirecting in {count} seconds</p>
 			<div className="font-medium text-indigo-600 hover:text-indigo-500 pt-5">
 				<Link to={SIGN_IN}>
 					<div className="flex flex-row">

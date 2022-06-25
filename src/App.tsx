@@ -9,7 +9,7 @@ import { PersistLogin } from '@/libraries/PersistLogin'
 // PAGES
 import Components from '@/pages/Components'
 import CreateRecordForm from '@/pages/RecordForm/CreateRecordForm'
-import Details from '@/pages/RecordDetails/RecordDetails'
+import RecordDetails from '@/pages/RecordDetails/RecordDetails'
 import PageNotFound from '@/pages/PageNotFound/PageNotFound'
 import RecordList from '@/pages/RecordList/RecordList'
 import SignIn from '@/pages/SignIn/SignIn'
@@ -31,22 +31,25 @@ const App: React.FC = () => {
 	return (
 		<AuthContextProvider>
 			<Routes>
+				{/* PROTECTED ROUTE */}
 				<Route element={<PersistLogin />}>
-					{/* PROTECTED ROUTE */}
 					<Route path="/" element={<AuthRoute />}>
 						<Route element={<MainLayout />}>
-							<Route path="dashboard" element={<div>dashboard page</div>} />
-							<Route path="record-list" element={<RecordList />} />
-							<Route path="record-form" element={<CreateRecordForm />} />
-							<Route path="record-details" element={<Details />} />
-							<Route path="components" element={<Components />} />
+							<Route path={DASHBOARD} element={<div>dashboard page</div>} />
+							<Route path={RECORD_LIST} element={<RecordList />} />
+							<Route path={RECORD_FORM} element={<CreateRecordForm />} />
+							<Route path={RECORD_DETAILS}>
+								<Route path=":uid" element={<RecordDetails />} />
+							</Route>
+							<Route path={COMPONENTS} element={<Components />} />
 						</Route>
 					</Route>
-					{/* PUBLIC ROUTE */}
-					<Route path={SIGN_IN} element={<SignIn />} />
-					<Route path={SIGN_OUT} element={<SignOut />} />
-					<Route path={SIGN_UP} element={<SignUp />} />
 				</Route>
+
+				{/* PUBLIC ROUTE */}
+				<Route path={SIGN_IN} element={<SignIn />} />
+				<Route path={SIGN_OUT} element={<SignOut />} />
+				<Route path={SIGN_UP} element={<SignUp />} />
 
 				{/* UNKNOWN ROUTE */}
 				<Route path="*" element={<PageNotFound />} />

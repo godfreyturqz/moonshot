@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 // CONTEXTS
 import { useAuthContext } from '@/contexts/AuthContextProvider'
 // LIBRARIES
@@ -7,6 +7,7 @@ import { Outlet } from 'react-router-dom'
 import { APIService } from '@/services/axios'
 
 export const PersistLogin = () => {
+	const [loading, setLoading] = useState(true)
 	const { setAuth } = useAuthContext()
 
 	useEffect(() => {
@@ -16,10 +17,12 @@ export const PersistLogin = () => {
 				setAuth(() => ({ accessToken: data?.accessToken }))
 			} catch (error) {
 				console.log(error)
+			} finally {
+				setLoading(false)
 			}
 		}
 		refreshAccessToken()
 	}, [])
 
-	return <Outlet />
+	return <>{loading === false && <Outlet />}</>
 }
