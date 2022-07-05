@@ -7,7 +7,7 @@ import { Outlet } from 'react-router-dom'
 import { APIService } from '@/services/axios'
 
 export const PersistLogin = () => {
-	const [loading, setLoading] = useState(true)
+	const [isLoading, setIsLoading] = useState(true)
 	const { setAuth } = useAuthContext()
 
 	useEffect(() => {
@@ -18,11 +18,11 @@ export const PersistLogin = () => {
 			} catch (error) {
 				console.log(error)
 			} finally {
-				setLoading(false)
+				setIsLoading(false)
 			}
 		}
 		refreshAccessToken()
-	}, [])
+	}, [isLoading])
 
-	return <>{loading === false && <Outlet />}</>
+	return <>{isLoading ? <div>loading...</div> : <Outlet />}</>
 }

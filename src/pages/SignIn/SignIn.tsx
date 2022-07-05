@@ -10,6 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 // SERVICES
 import { APIService } from '@/services/axios'
+import { UseLocationState } from '@/libraries/AuthRoute'
 
 //---------------
 // TYPES
@@ -17,10 +18,6 @@ import { APIService } from '@/services/axios'
 type FormValuesType = {
 	email: string
 	password: string
-}
-
-type UseLocationState = {
-	pathname: string
 }
 
 //---------------
@@ -33,6 +30,7 @@ const Signin = () => {
 	const location = useLocation()
 	const locationState = location.state as UseLocationState
 
+	console.log(location)
 	const onSubmit: SubmitHandler<FormValuesType> = async (formData) => {
 		// Logic flow
 		// 1. send payload thru API service
@@ -42,14 +40,18 @@ const Signin = () => {
 		// 5. navigate to desired route i.e. '/dashboard'
 
 		try {
-			const { data } = await new APIService('POST', '', formData).signin()
+			const { data } = await new APIService('POST', {
+				payload: formData,
+			}).signin()
+
 			if (!data) return
+
 			reset()
 			setAuth((prev) => ({
 				...prev,
 				accessToken: data.accessToken,
 			}))
-			navigate(locationState?.pathname || DASHBOARD)
+			navigate(locationState?.prevPathname || DASHBOARD)
 		} catch (error) {
 			console.log(error)
 		}

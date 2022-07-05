@@ -170,7 +170,7 @@ const RecordList: React.FC = () => {
 								<td className="px-6 py-4">{item.email}</td>
 								<td className="px-6 py-4">{item.contact}</td>
 								<td className="px-6 py-4">{item.gender}</td>
-								<td className="px-6 py-4 w-min">
+								<td className="px-6 py-4">
 									{item.houseNumber} {item.street}, {item.barangay}, {item.city}
 									, {item.province}
 								</td>
