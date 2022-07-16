@@ -18,13 +18,12 @@ export class APIService {
 	private API_BASE_URL: string = isLocalServer
 		? 'http://localhost:5000/api/v1'
 		: 'https://yoursite.com/api/v1'
-	private id: string | undefined
-	private payload: object | undefined
+	private id: string
+	private payload: object
 
-	constructor(private httpMethod: Method, private options: Options = {}) {
-		console.log(options)
-		this.id = options.id
-		this.payload = options.payload
+	constructor(private httpMethod: Method, options: Options = {}) {
+		this.id = options.id || ''
+		this.payload = options.payload || {}
 	}
 
 	private axiosRequest(
@@ -33,7 +32,6 @@ export class APIService {
 		page?: number,
 		limit?: number
 	) {
-		console.log(this.payload)
 		const config = {
 			baseURL: this.API_BASE_URL,
 			url: `${url}/${this.id}?page=${page}&limit=${limit}`,

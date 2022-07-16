@@ -22,7 +22,7 @@ export const PersistLogin = () => {
 			}
 		}
 		refreshAccessToken()
-	}, [isLoading])
+	}, [])
 
 	return <>{isLoading ? <div>loading...</div> : <Outlet />}</>
 }
