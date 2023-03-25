@@ -33,7 +33,7 @@ const App: React.FC = () => {
 			<Routes>
 				{/* PROTECTED ROUTE */}
 				<Route element={<PersistLogin />}>
-					<Route path="/" element={<AuthRoute />}>
+					<Route path={INDEX} element={<AuthRoute />}>
 						<Route element={<MainLayout />}>
 							<Route path={DASHBOARD} element={<div>dashboard page</div>} />
 							<Route path={RECORD_LIST} element={<RecordList />} />

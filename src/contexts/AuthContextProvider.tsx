@@ -15,7 +15,9 @@ export const AuthContext = createContext({} as AuthContextType)
 
 // 1. Use for wrapping the App
 export const AuthContextProvider: React.FC = ({ children }) => {
-	const [auth, setAuth] = useState({} as AuthContextType['auth'])
+	const [auth, setAuth] = useState({
+		accessToken: '',
+	} as AuthContextType['auth'])
 
 	return (
 		<AuthContext.Provider value={{ auth, setAuth }}>

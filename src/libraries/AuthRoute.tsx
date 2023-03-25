@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 // CONSTANTS
-import { SIGN_IN } from '@/constants/routes'
+import { DASHBOARD, SIGN_IN } from '@/constants/routes'
 // CONTEXTS
 import { useAuthContext } from '@/contexts/AuthContextProvider'
 
